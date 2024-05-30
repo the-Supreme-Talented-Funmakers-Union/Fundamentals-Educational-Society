@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class Dealer : MonoBehaviour
 {
     public GameObject cardImage;
     public Button button;
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
             card.gameObject.transform.rotation = Quaternion.identity;
             card.GetComponent<Card>().GetCardType = (CardType)cardType;
             card.GetComponent<Card>().GetCardValue = i % 13 + 1;
-            card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers" + "/" + (CardType)cardType + (i % 13 + 1).ToString());
+            card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/" + (CardType)cardType + (i % 13 + 1).ToString());
             card.transform.parent = GameObject.Find("Deck").transform;
             card.gameObject.SetActive(false);
             cardLibrary.Add(card);
@@ -87,17 +87,17 @@ public class GameManager : MonoBehaviour
                     case 1:
                         cards.transform.parent = GameObject.Find("Player 2").transform;
                         cards.GetTargetPos = new Vector3(-6, 1.35f - 0.15f * i, 1);
-                        //cards.transform.eulerAngles = new Vector3(0, 0, 90);
+                        //cards.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/CardBack");
                         break;
                     case 2:
                         cards.transform.parent = GameObject.Find("Player 3").transform;
                         cards.GetTargetPos = new Vector3(-1.6f + 0.2f * i, 4, 1);
-                        //cards.transform.eulerAngles = new Vector3(0, 0, 90);
+                        //cards.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/CardBack");
                         break;
                     case 3:
                         cards.transform.parent = GameObject.Find("Player 4").transform;
                         cards.GetTargetPos = new Vector3(6, 1.35f - 0.15f * i, 1);
-                        //cards.transform.eulerAngles = new Vector3(0, 0, 90);
+                        //cards.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/CardBack");
                         break;
                 }
             }
