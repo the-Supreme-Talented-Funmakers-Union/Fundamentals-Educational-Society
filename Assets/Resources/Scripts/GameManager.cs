@@ -84,12 +84,12 @@ public class GameManager : MonoBehaviour
                 {
                     foreach (var op in new string[] { "+", "-", "*", "/", "%", "^", "¡Ì" })
                     {
-                        if ((op == "/" || op == "%") && card2.GetCardValue >= card1.GetCardValue)
+                        if ((op == "/" || op == "%") && card1.GetCardValue >= card2.GetCardValue)
                         {
                             continue;
                         }
                         float result = CalculateResult(card1.GetCardValue, card2.GetCardValue, op);
-                        if (result == goalCard.GetCardValue)
+                        if (result == (float)goalCard.GetCardValue)
                         {
                             Card.RevealCard(card1.gameObject);
                             card1.GetComponent<Card>().GetTargetPos = buttonManager.cardSlot1.position;
@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
                 buttonManager.ChooseCard1();
             }
         }
-        else if (result == goalCard.GetCardValue)
+        else if (result == (float)goalCard.GetCardValue)
         {
             resultText.text = "Correct!";
             buttonManager.operatorText.text = "";

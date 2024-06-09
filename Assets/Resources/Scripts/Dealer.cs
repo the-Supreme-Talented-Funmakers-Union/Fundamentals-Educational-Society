@@ -4,7 +4,6 @@ using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.WSA;
 using static System.Net.Mime.MediaTypeNames;
 
 public class Dealer : MonoBehaviour

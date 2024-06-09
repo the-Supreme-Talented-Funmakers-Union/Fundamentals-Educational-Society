@@ -112,6 +112,7 @@ public class ButtonManager : MonoBehaviour
         gameManager.dealer.drawCount = 0;
         drawButton.gameObject.SetActive(true);
         skipButton.gameObject.SetActive(false);
+        gameManager.resultText.text = "";
         gameManager.currentPlayer = (gameManager.currentPlayer % 4) + 1;
         if (gameManager.currentPlayer != 1)
         {
@@ -128,6 +129,7 @@ public class ButtonManager : MonoBehaviour
         gameManager.dealer.drawCount = 0;
         drawButton.gameObject.SetActive(true);
         skipButton.gameObject.SetActive(false);
+        gameManager.resultText.text = "";
         gameManager.currentPlayer = (gameManager.currentPlayer % 4) + 1;
         if (gameManager.currentPlayer != 1)
         {
@@ -264,6 +266,7 @@ public class ButtonManager : MonoBehaviour
         chooseCard2Button.gameObject.SetActive(false);
         addCard1Button.gameObject.SetActive(true);
         addCard2Button.gameObject.SetActive(true);
+        gameManager.resultText.text = "";
         gameManager.currentPlayer = (gameManager.currentPlayer % 4) + 1;
         if (gameManager.currentPlayer != 1)
         {
