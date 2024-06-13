@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerSelectCard : MonoBehaviour
 {
     public GameObject highlightedCard;
+    private bool isDragging = false;
+    private Vector3 offset;
+    private float zCoord;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -19,13 +22,20 @@ public class PlayerSelectCard : MonoBehaviour
                     if (highlightedCard == clickedCard)
                     {
                         DehighlightCard();
+                        zCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+                        offset = gameObject.transform.position - GetMouseWorldPos();
+                        isDragging = true;
                     }
                     else
                     {
                         HighlightCard(clickedCard);
                     }
                 }
-            }
+            }          
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
         }
     }
     private void HighlightCard(GameObject card)
@@ -47,5 +57,11 @@ public class PlayerSelectCard : MonoBehaviour
             highlightedCard.GetComponent<SpriteRenderer>().color = Color.white;
             highlightedCard = null;
         }
+    }
+    private Vector3 GetMouseWorldPos()
+    {
+        Vector3 mousePoint = Input.mousePosition;
+        mousePoint.z = zCoord;
+        return Camera.main.ScreenToWorldPoint(mousePoint);
     }
 }
