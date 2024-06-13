@@ -7,7 +7,6 @@ public class PlayerSelectCard : MonoBehaviour
     public GameObject highlightedCard;
     private bool isDragging = false;
     private Vector3 offset;
-    private float zCoord;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -22,17 +21,21 @@ public class PlayerSelectCard : MonoBehaviour
                     if (highlightedCard == clickedCard)
                     {
                         DehighlightCard();
-                        zCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-                        offset = gameObject.transform.position - GetMouseWorldPos();
-                        isDragging = true;
+                        // offset = gameObject.transform.position - GetMouseWorldPos(); drag
+                        // isDragging = true;                                            
                     }
                     else
                     {
-                        HighlightCard(clickedCard);
+                        HighlightCard(clickedCard);                       
                     }
                 }
             }          
         }
+        if (isDragging)
+        {
+            transform.position = GetMouseWorldPos() + offset;
+        }
+
         else if (Input.GetMouseButtonUp(0))
         {
             isDragging = false;
@@ -61,7 +64,7 @@ public class PlayerSelectCard : MonoBehaviour
     private Vector3 GetMouseWorldPos()
     {
         Vector3 mousePoint = Input.mousePosition;
-        mousePoint.z = zCoord;
+        mousePoint.z = Camera.main.nearClipPlane;
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
 }
