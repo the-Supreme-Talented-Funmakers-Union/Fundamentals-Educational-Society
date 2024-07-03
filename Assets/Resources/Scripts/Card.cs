@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public enum CardType
 {
     Spades,
@@ -12,8 +13,12 @@ public class Card : MonoBehaviour
 {
     private CardType cardType;
     private int cardValue;
+    private bool canMove = false;
     private Vector3 targetPos;
-    public bool Highlighted = false;
+    void Start()
+    {
+        Debug.Log(transform.position);
+    }
     void Update()
     {
         transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 3);
@@ -32,29 +37,14 @@ public class Card : MonoBehaviour
         set { cardType = value; }
         get { return cardType; }
     }
+    public bool GetCanMove
+    {
+        set { canMove = value; }
+        get { return canMove; }
+    }
     public Vector3 GetTargetPos
     {
         set { targetPos = value; }
         get { return targetPos; }
-    }
-    public bool IsHighlighted
-    {
-        set { Highlighted = value; }
-        get { return Highlighted; }
-    }
-    public static void RevealCard(GameObject cardObject)
-    {
-        if (cardObject.GetComponent<Card>().GetCardValue <= 13)
-        {
-            cardObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers" + "/" + cardObject.GetComponent<Card>().GetCardType + cardObject.GetComponent<Card>().GetCardValue.ToString());
-        }
-        else if (cardObject.GetComponent<Card>().GetCardValue <= 14)
-        {
-            cardObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/JokerBlack");
-        }
-        else if (cardObject.GetComponent<Card>().GetCardValue <= 15)
-        {
-            cardObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/JokerRed");
-        }
     }
 }
