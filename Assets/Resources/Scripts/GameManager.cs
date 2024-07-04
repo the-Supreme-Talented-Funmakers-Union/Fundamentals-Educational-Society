@@ -1,19 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
 {
-    public ButtonManager buttonManager;
     public Dealer dealer;
     public TMP_Text resultText;
-    public TMP_Text goalValueText;
-    private Card goalCard;
-    private Card card1;
-    private Card card2;
     public TMP_Text player1ScoreText;
     public TMP_Text player2ScoreText;
     public TMP_Text player3ScoreText;
@@ -23,49 +17,98 @@ public class GameManager : MonoBehaviour
     private int player2Score = 0;
     private int player3Score = 0;
     private int player4Score = 0;
-    void Update()
+    private Transform cardSlot1, cardSlot2, cardSlot3, cardSlot4, goal;
+    private TMP_Text operatorText1, operatorText2, operatorText3;
+    public void Update()
     {
-        if (buttonManager.cardSlot1.childCount > 0 && buttonManager.cardSlot2.childCount > 0)
+        if (dealer.cardDealt)
         {
-            card1 = buttonManager.cardSlot1.GetChild(0).GetComponent<Card>();
-            card2 = buttonManager.cardSlot2.GetChild(0).GetComponent<Card>();
-        }
-        else
-        {
-            card1 = null;
-            card2 = null;
-        }
-        CheckPlayerInterFace();
-    }
-    public void CheckPlayerInterFace()
-    {
-        if (GameObject.Find("Canvas/GamePlay") != null && GameObject.Find("Canvas/GamePlay").activeInHierarchy)
-        {
-            if (currentPlayer == 1)
+            GameObject currentSetting = dealer.currentSetting;
+            CardPlayStats cardPlayStats = currentSetting.GetComponent<CardPlayStats>();
+            if (currentSetting == dealer.easySetting)
             {
-                GameObject.Find("Canvas/GamePlay").transform.Find("PlayerInterface").gameObject.SetActive(true);
+                EasyMode(cardPlayStats);
             }
-            if (currentPlayer != 1)
+            else if (currentSetting == dealer.mediumSetting)
             {
-                GameObject.Find("Canvas/GamePlay").transform.Find("PlayerInterface").gameObject.SetActive(false);
+                MediumMode(cardPlayStats);
+            }
+            else if (currentSetting == dealer.hardSetting)
+            {
+                HardMode(cardPlayStats);
             }
         }
     }
-    public void SetGoalCard()
+    private void EasyMode(CardPlayStats cardPlayStats)
     {
-        if (GameObject.Find("Goal").transform.childCount > 0)
+        cardSlot1 = cardPlayStats.Card1.transform;
+        cardSlot2 = cardPlayStats.Card2.transform;
+        operatorText1 = GameObject.Find("EasyMode/Operator 1/Canvas/Button/Text (TMP)").GetComponent<TMP_Text>();
+        goal = cardPlayStats.Goal.transform;
+    }
+    private void MediumMode(CardPlayStats cardPlayStats)
+    {
+        cardSlot1 = cardPlayStats.Card1.transform;
+        cardSlot2 = cardPlayStats.Card2.transform;
+        cardSlot3 = cardPlayStats.Card3.transform;
+        operatorText1 = GameObject.Find("MediumMode/Operator 1/Canvas/Button/Text (TMP)").GetComponent<TMP_Text>();
+        operatorText2 = GameObject.Find("MediumMode/Operator 2/Canvas/Button/Text (TMP)").GetComponent<TMP_Text>();
+        goal = cardPlayStats.Goal.transform;
+    }
+    private void HardMode(CardPlayStats cardPlayStats)
+    {
+        cardSlot1 = cardPlayStats.Card1.transform;
+        cardSlot2 = cardPlayStats.Card2.transform;
+        cardSlot3 = cardPlayStats.Card3.transform;
+        cardSlot4 = cardPlayStats.Card4.transform;
+        operatorText1 = GameObject.Find("HardMode/Operator 1/Canvas/Button/Text (TMP)").GetComponent<TMP_Text>();
+        operatorText2 = GameObject.Find("HardMode/Operator 2/Canvas/Button/Text (TMP)").GetComponent<TMP_Text>();
+        operatorText3 = GameObject.Find("HardMode/Operator 3/Canvas/Button/Text (TMP)").GetComponent<TMP_Text>();
+        goal = cardPlayStats.Goal.transform;
+    }
+    public void ConfirmSelection()
+    {
+        float result = 0;
+        int intResult = 0;
+
+        if (dealer.currentSetting == dealer.easySetting)
         {
-            goalCard = GameObject.Find("Goal").transform.GetChild(0).GetComponent<Card>();
-            if (goalCard != null)
-            {
-                goalValueText.text = goalCard.GetCardValue.ToString();
-            }
+            int value1Int = cardSlot1.GetChild(0).GetComponent<Card>().GetCardValue;
+            int value2Int = cardSlot2.GetChild(0).GetComponent<Card>().GetCardValue;
+            string op1 = operatorText1.text;
+            int goalValueInt = goal.GetChild(0).GetComponent<Card>().GetCardValue;
+            intResult = CalculateIntResult(value1Int, value2Int, op1);
+            EasyResult(intResult, goalValueInt);
         }
-        else
+        else if (dealer.currentSetting == dealer.mediumSetting)
         {
-            goalValueText.text = "";
+            float value1Float = cardSlot1.GetChild(0).GetComponent<Card>().GetCardValue;
+            float value2Float = cardSlot2.GetChild(0).GetComponent<Card>().GetCardValue;
+            float value3Float = cardSlot3.GetChild(0).GetComponent<Card>().GetCardValue;
+            string op1 = operatorText1.text;
+            string op2 = operatorText2.text;
+            float goalValue = goal.GetChild(0).GetComponent<Card>().GetCardValue;
+            result = CalculateFloatResult(value1Float, value2Float, op1);
+            result = CalculateFloatResult(result, value3Float, op2);
+            MediumResult(result, goalValue);
+        }
+        else if (dealer.currentSetting == dealer.hardSetting)
+        {
+            float value1Float = cardSlot1.GetChild(0).GetComponent<Card>().GetCardValue;
+            float value2Float = cardSlot2.GetChild(0).GetComponent<Card>().GetCardValue;
+            float value3Float = cardSlot3.GetChild(0).GetComponent<Card>().GetCardValue;
+            float value4Float = cardSlot4.GetChild(0).GetComponent<Card>().GetCardValue;
+            string op1 = operatorText1.text;
+            string op2 = operatorText2.text;
+            string op3 = operatorText3.text;
+            float goalValue = goal.GetChild(0).GetComponent<Card>().GetCardValue;
+            result = CalculateFloatResult(value1Float, value2Float, op1);
+            result = CalculateFloatResult(result, value3Float, op2);
+            result = CalculateFloatResult(result, value4Float, op3);
+            HardResult(result, goalValue);
         }
     }
+<<<<<<< Updated upstream
     public IEnumerator AIPlayTurn(int playerNumber)
     {
         yield return new WaitForSeconds(1.0f);
@@ -125,21 +168,23 @@ public class GameManager : MonoBehaviour
         }
     }
     private float CalculateResult(int value1, int value2, string op)
+=======
+    private int CalculateIntResult(int value1, int value2, string op)
+>>>>>>> Stashed changes
     {
         switch (op)
         {
             case "+": return value1 + value2;
             case "-": return value1 - value2;
-            case "*": return value1 * value2;
-            case "/": return (float)value1 / value2;
+            case "x": return value1 * value2;
+            case "/": return value1 / value2;
             case "%": return value1 % value2;
-            case "^": return (int)Mathf.Pow(value1, value2);
-            case "¡Ì": return (int)Mathf.Pow(value1, 1.0f / value2);
             default: return int.MaxValue;
         }
     }
-    public IEnumerator AIChooseNewGoalCard()
+    private void EasyResult(int result, int goalValue)
     {
+<<<<<<< Updated upstream
         yield return new WaitForSeconds(2.0f);
         if (Random.value > 0.5f)
         {
@@ -194,76 +239,196 @@ public class GameManager : MonoBehaviour
             }
         }
         else if (result == goalCard.GetCardValue)
+=======
+        if (result == goalValue)
+>>>>>>> Stashed changes
         {
             resultText.text = "Correct!";
-            buttonManager.operatorText.text = "";
-            UpdateScore(currentPlayer, score);
-            Transform currentPlayerTransform = GameObject.Find("Player " + currentPlayer).transform;
-            if (currentPlayerTransform.childCount == 0)
-            {
-                EndGame();
-                return;
-            }
-            else
-            {
-                buttonManager.takeCard1Button.gameObject.SetActive(false);
-                buttonManager.takeCard2Button.gameObject.SetActive(false);
-                buttonManager.chooseCard1Button.gameObject.SetActive(true);
-                buttonManager.chooseCard2Button.gameObject.SetActive(true);
-                if (currentPlayer != 1)
-                {
-                    StartCoroutine(AIChooseNewGoalCard());
-                }
+            UpdateScore(result);
+        }
+        else
+        {
+            resultText.text = "Incorrect!";
+            UpdateScore(-result);
+        }
+    }
+    private float CalculateFloatResult(float value1, float value2, string op)
+    {
+        switch (op)
+        {
+            case "+": return value1 + value2;
+            case "-": return value1 - value2;
+            case "x": return value1 * value2;
+            case "/": return value1 / value2;
+            case "%": return value1 % value2;
+            case "^": return Mathf.Pow(value1, value2);
+            default: return float.MaxValue;
+        }
+    }
+    private void MediumResult(float result, float goalValue)
+    {
+        if (result >= (goalValue - 0.5f) && result < goalValue + 0.5f)
+        {
+            resultText.text = "Correct!";
+            UpdateScore(Mathf.RoundToInt(result));
+        }
+        else
+        {
+            resultText.text = "Incorrect!";
+            UpdateScore(-Mathf.RoundToInt(result));
+        }
+    }
+    private void HardResult(float result, float goalValue)
+    {
+        if (Mathf.Abs(result) >= (goalValue - 0.5f) && Mathf.Abs(result) < goalValue + 0.5f)
+        {
+            resultText.text = "Correct!";
+            UpdateScore(Mathf.RoundToInt(result));
+        }
+        else
+        {
+            resultText.text = "Incorrect!";
+            UpdateScore(-Mathf.RoundToInt(result));
+        }
+    }
+    public IEnumerator AIPlayTurn(int player)
+    {
+        yield return new WaitForSeconds(2);
+        Transform aiHandTransform = GameObject.Find("Player " + player).transform;
+        List<Card> aiCards = new List<Card>();
+        for (int i = 0; i < aiHandTransform.childCount; i++)
+        {
+            aiCards.Add(aiHandTransform.GetChild(i).GetComponent<Card>());
+        }
+        bool actionTaken = false;
 
-            }
-        }
-        else
+        if (dealer.currentSetting == dealer.easySetting)
         {
-            resultText.text = "Oops!";
-            buttonManager.operatorText.text = "";
-            UpdateScore(currentPlayer, -score);
-            buttonManager.TakeCardFromSlot1();
-            buttonManager.TakeCardFromSlot2();
-            buttonManager.SkipTurn();
+            actionTaken = TryEasyMode(aiCards);
+        }
+        else if (dealer.currentSetting == dealer.mediumSetting)
+        {
+            actionTaken = TryMediumMode(aiCards);
+        }
+        else if (dealer.currentSetting == dealer.hardSetting)
+        {
+            actionTaken = TryHardMode(aiCards);
+        }
+
+        if (actionTaken)
+        {
+            ConfirmSelection();
+        }
+        currentPlayer = (currentPlayer % 4) + 1;
+        if (currentPlayer != 1)
+        {
+            StartCoroutine(AIPlayTurn(currentPlayer));
         }
     }
-    private void UpdateScore(int player, int score)
+    private bool TryEasyMode(List<Card> aiCards)
     {
-        switch (player)
+        // Logic for AI to handle easy mode
+        if (aiCards.Count < 2)
         {
-            case 1:
-                player1Score += score;
-                player1ScoreText.text = "Your Score: " + player1Score;
-                break;
-            case 2:
-                player2Score += score;
-                player2ScoreText.text = "Player 2 Score: " + player2Score;
-                break;
-            case 3:
-                player3Score += score;
-                player3ScoreText.text = "Player 3 Score: " + player3Score;
-                break;
-            case 4:
-                player4Score += score;
-                player4ScoreText.text = "Player 4 Score: " + player4Score;
-                break;
+            return false;
         }
+
+        Card card1 = aiCards[0];
+        Card card2 = aiCards[1];
+        string op1 = operatorText1.text;
+        int result = CalculateIntResult(card1.GetCardValue, card2.GetCardValue, op1);
+        int goalValue = goal.GetChild(0).GetComponent<Card>().GetCardValue;
+
+        if (result == goalValue)
+        {
+            // Place cards in slots
+            cardSlot1.GetChild(0).SetParent(cardSlot1);
+            cardSlot2.GetChild(0).SetParent(cardSlot2);
+            return true;
+        }
+
+        return false;
     }
-    private void EndGame()
+    private bool TryMediumMode(List<Card> aiCards)
     {
-        GameObject.Find("Canvas").transform.Find("Ending").gameObject.SetActive(true);
-        GameObject.Find("Canvas").transform.Find("GamePlay").gameObject.SetActive(false);
-        GameObject.Find("Canvas/Ending/Player1Score").GetComponent<TMP_Text>().text = player1ScoreText.text;
-        GameObject.Find("Canvas/Ending/Player2Score").GetComponent<TMP_Text>().text = player2ScoreText.text;
-        GameObject.Find("Canvas/Ending/Player3Score").GetComponent<TMP_Text>().text = player3ScoreText.text;
-        GameObject.Find("Canvas/Ending/Player4Score").GetComponent<TMP_Text>().text = player4ScoreText.text;
-        if (player1Score > player2Score && player1Score > player3Score && player1Score > player4Score)
+        // Logic for AI to handle medium mode
+        if (aiCards.Count < 3)
         {
-            GameObject.Find("Canvas/Ending/Result").GetComponent<TMP_Text>().text = "You Win!";
+            return false;
         }
-        else
+
+        Card card1 = aiCards[0];
+        Card card2 = aiCards[1];
+        Card card3 = aiCards[2];
+        string op1 = operatorText1.text;
+        string op2 = operatorText2.text;
+        float result = CalculateFloatResult(card1.GetCardValue, card2.GetCardValue, op1);
+        result = CalculateFloatResult(result, card3.GetCardValue, op2);
+        float goalValue = goal.GetChild(0).GetComponent<Card>().GetCardValue;
+
+        if (result >= (goalValue - 0.5f) && result < (goalValue + 0.5f))
         {
-            GameObject.Find("Canvas/Ending/Result").GetComponent<TMP_Text>().text = "You Lost...";
+            // Place cards in slots
+            cardSlot1.GetChild(0).SetParent(cardSlot1);
+            cardSlot2.GetChild(0).SetParent(cardSlot2);
+            cardSlot3.GetChild(0).SetParent(cardSlot3);
+            return true;
         }
+
+        return false;
+    }
+    private bool TryHardMode(List<Card> aiCards)
+    {
+        // Logic for AI to handle hard mode
+        if (aiCards.Count < 4)
+        {
+            return false;
+        }
+
+        Card card1 = aiCards[0];
+        Card card2 = aiCards[1];
+        Card card3 = aiCards[2];
+        Card card4 = aiCards[3];
+        string op1 = operatorText1.text;
+        string op2 = operatorText2.text;
+        string op3 = operatorText3.text;
+        float result = CalculateFloatResult(card1.GetCardValue, card2.GetCardValue, op1);
+        result = CalculateFloatResult(result, card3.GetCardValue, op2);
+        result = CalculateFloatResult(result, card4.GetCardValue, op3);
+        float goalValue = goal.GetChild(0).GetComponent<Card>().GetCardValue;
+
+        if ((Mathf.Abs(result - goalValue) <= 0.5f) || (Mathf.Abs(result + goalValue) <= 0.5f))
+        {
+            // Place cards in slots
+            cardSlot1.GetChild(0).SetParent(cardSlot1);
+            cardSlot2.GetChild(0).SetParent(cardSlot2);
+            cardSlot3.GetChild(0).SetParent(cardSlot3);
+            cardSlot4.GetChild(0).SetParent(cardSlot4);
+            return true;
+        }
+
+        return false;
+    }
+    private void UpdateScore(/*int player, */int result)
+    {
+        //    switch (player)
+        //    {
+        //        case 1:
+        //            player1Score += score;
+        //            player1ScoreText.text = "Your Score: " + player1Score;
+        //            break;
+        //        case 2:
+        //            player2Score += score;
+        //            player2ScoreText.text = "Player 2 Score: " + player2Score;
+        //            break;
+        //        case 3:
+        //            player3Score += score;
+        //            player3ScoreText.text = "Player 3 Score: " + player3Score;
+        //            break;
+        //        case 4:
+        //            player4Score += score;
+        //            player4ScoreText.text = "Player 4 Score: " + player4Score;
+        //            break;
+        //    }
     }
 }

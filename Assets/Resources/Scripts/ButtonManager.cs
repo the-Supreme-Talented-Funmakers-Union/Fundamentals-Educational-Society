@@ -1,90 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
 {
     public GameManager gameManager;
     public Dealer dealer;
-    public Button startButton;
-    public Button exitButton;
-    public Button addCard1Button;
-    public Button addCard2Button;
-    public TMP_Text operatorText;
-    public Button confirmButton;
-    public Button takeCard1Button;
-    public Button takeCard2Button;
-    public Button chooseCard1Button;
-    public Button chooseCard2Button;
-    public Button drawButton;
-    public Button skipButton;
-    public Transform cardSlot1;
-    public Transform cardSlot2;
-    private GameObject highlightedCard;
-    private PlayerSelectCard playerSelectCard;
-    void Start()
+    private bool Ready = false;
+    private string[] operators = { "+", "-", "x", "¡Â", "%", "^", "=" };
+    public void Update()
     {
-        playerSelectCard = GameObject.FindObjectOfType<PlayerSelectCard>();
-    }
-    void Update()
-    {
-        if (playerSelectCard != null)
+        if (dealer.cardDealt)
         {
-            highlightedCard = playerSelectCard.highlightedCard;
-        }
-        if (cardSlot1.childCount > 0 && cardSlot2.childCount > 0 && operatorText.text != "")
-        {
-            confirmButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            confirmButton.gameObject.SetActive(false);
-        }
-    }
-    public void OnDeal()
-    {
-        GameObject dealerObject = GameObject.FindObjectOfType<Dealer>().gameObject;
-        if (dealerObject != null)
-        {
-            dealerObject.SendMessage("Deal");
-            startButton.gameObject.SetActive(false);
-        }
-    }
-    public void ExitGame()
-    {
-        Application.Quit();
-    }
-    public void MoveCardToSlot1()
-    {
-        if (highlightedCard != null)
-        {
-            MoveCardToSlot(cardSlot1);
-            addCard1Button.gameObject.SetActive(false);
-            takeCard1Button.gameObject.SetActive(true);
+            GameObject currentSetting = dealer.currentSetting;
+            CardPlayStats cardPlayStats = currentSetting.GetComponent<CardPlayStats>();
+            if (currentSetting = dealer.easySetting)
+            {
+                if (cardPlayStats.Card1.transform.childCount != 0 && cardPlayStats.Card2.transform.childCount != 0)
+                {
+                    Ready = true;
+                }
+                else
+                {
+                    Ready = false;
+                }
+            }
+            else if (currentSetting = dealer.mediumSetting)
+            {
+                if (cardPlayStats.Card1.transform.childCount != 0 && cardPlayStats.Card2.transform.childCount != 0 && cardPlayStats.Card3.transform.childCount != 0)
+                {
+                    Ready = true;
+                }
+                else
+                {
+                    Ready = false;
+                }
+            }
+            else if (currentSetting = dealer.hardSetting)
+            {
+                if (cardPlayStats.Card1.transform.childCount != 0 && cardPlayStats.Card2.transform.childCount != 0 && cardPlayStats.Card3.transform.childCount != 0 && cardPlayStats.Card4.transform.childCount != 0)
+                {
+                    Ready = true;
+                }
+                else
+                {
+                    Ready = false;
+                }
+            }
         }
     }
-    public void MoveCardToSlot2()
+    public void EasyMode()
     {
-        if (highlightedCard != null)
-        {
-            MoveCardToSlot(cardSlot2);
-            addCard2Button.gameObject.SetActive(false);
-            takeCard2Button.gameObject.SetActive(true);
-        }
+        SetUpLevel("Easy");
     }
-    private void MoveCardToSlot(Transform slot)
+    public void MediumMode()
     {
-        if (highlightedCard != null)
-        {
-            highlightedCard.GetComponent<Card>().GetTargetPos = slot.position;
-            highlightedCard.transform.parent = slot;
-            DehighlightCard();
-        }
+        SetUpLevel("Medium");
     }
-    public void TakeCardFromSlot1()
+    public void HardMode()
     {
+        SetUpLevel("Hard");
+    }
+    private void SetUpLevel(string mode)
+    {
+        dealer.SetMode(mode);
+        GameObject.FindWithTag("GameSetUpPanel").SetActive(false);
+    }
+    public void CycleOperator(TMP_Text operatorText)
+    {
+        int currentOperatorIndex = System.Array.IndexOf(operators, operatorText.text);
+        currentOperatorIndex = (currentOperatorIndex + 1) % operators.Length;
+        operatorText.text = operators[currentOperatorIndex];
+    }
+    public void ConfirmCard()
+    {
+<<<<<<< Updated upstream
         TakeCardFromSlot(cardSlot1);
         takeCard1Button.gameObject.SetActive(false);
         addCard1Button.gameObject.SetActive(true);
@@ -277,6 +268,11 @@ public class ButtonManager : MonoBehaviour
             highlightedCard.GetComponent<Card>().IsHighlighted = false;
             highlightedCard.GetComponent<SpriteRenderer>().color = Color.white;
             highlightedCard = null;
+=======
+        if (Ready)
+        {
+            gameManager.ConfirmSelection();
+>>>>>>> Stashed changes
         }
     }
 }

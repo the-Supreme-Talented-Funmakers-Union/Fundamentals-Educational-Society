@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,18 +11,67 @@ using static System.Net.Mime.MediaTypeNames;
 public class Dealer : MonoBehaviour
 {
     public GameObject cardImage;
+    public GameObject easySetting;
+    public GameObject mediumSetting;
+    public GameObject hardSetting;
+    public GameObject currentSetting;
+    public GameManager gameManager;
+    public bool cardDealt = false;
     public int drawCount = 0;
     private Card card;
     private List<Card> cardLibrary = new List<Card>();
     private Queue<Card> cardQueue = new Queue<Card>();
-    private void Start()
+    private GameObject holder;
+    private GameObject recycle;
+    private GameObject goal;
+    private int deckSize;
+    private int cardsPerPlayer;
+    void Start()
     {
-        CreatCard();
-        shuffle();
+        holder = GameObject.FindWithTag("CardHolder");
+        recycle = GameObject.FindWithTag("CardRecycler");
     }
-    public void CreatCard()
+    public void SetMode(string mode)
     {
-        for (int d = 0; d < 2; d++)
+        if (currentSetting != null)
+        {
+            Destroy(currentSetting);
+        }
+        switch (mode)
+        {
+            case "Easy":
+                DestroyImmediate(mediumSetting);
+                DestroyImmediate(hardSetting);
+                easySetting.SetActive(true);
+                currentSetting = easySetting;
+                deckSize = 2;
+                cardsPerPlayer = 5;
+                break;
+            case "Medium":
+                DestroyImmediate(easySetting);
+                DestroyImmediate(hardSetting);
+                mediumSetting.SetActive(true);
+                currentSetting = mediumSetting;
+                deckSize = 3;
+                cardsPerPlayer = 7;
+                break;
+            case "Hard":
+                DestroyImmediate(easySetting);
+                DestroyImmediate(mediumSetting);
+                hardSetting.SetActive(true);
+                currentSetting = hardSetting;
+                deckSize = 4;
+                cardsPerPlayer = 9;
+                break;
+        }
+        goal = GameObject.FindWithTag("GoalCard");
+        CreateCard();
+        shuffle();
+        StartCoroutine(Deal());
+    }
+    public void CreateCard()
+    {
+        for (int d = 0; d < deckSize; d++)
         {
             int cardType = 0;
             for (int i = 0; i < 52; i++)
@@ -30,7 +80,7 @@ public class Dealer : MonoBehaviour
                 {
                     cardType++;
                 }
-                card = Instantiate(Resources.Load<Card>("Card"));
+                card = Instantiate(Resources.Load<Card>("Prefabs/Card"));
                 card.gameObject.transform.position = Vector3.forward;
                 card.gameObject.transform.rotation = Quaternion.identity;
                 card.GetComponent<Card>().GetCardType = (CardType)cardType;
@@ -40,7 +90,7 @@ public class Dealer : MonoBehaviour
                 card.gameObject.SetActive(false);
                 cardLibrary.Add(card);
             }
-            card = Instantiate(Resources.Load<Card>("Card"));
+            card = Instantiate(Resources.Load<Card>("Prefabs/Card"));
             card.gameObject.transform.position = Vector3.forward;
             card.gameObject.transform.rotation = Quaternion.identity;
             card.GetComponent<Card>().GetCardType = (CardType)cardType;
@@ -49,7 +99,7 @@ public class Dealer : MonoBehaviour
             card.transform.parent = GameObject.Find("Deck").transform;
             card.gameObject.SetActive(false);
             cardLibrary.Add(card);
-            card = Instantiate(Resources.Load<Card>("Card"));
+            card = Instantiate(Resources.Load<Card>("Prefabs/Card"));
             card.gameObject.transform.position = Vector3.forward;
             card.gameObject.transform.rotation = Quaternion.identity;
             card.GetComponent<Card>().GetCardType = (CardType)cardType;
@@ -79,10 +129,10 @@ public class Dealer : MonoBehaviour
     {
         Card cards;
         cardImage.SetActive(true);
-        for (int i = 0; i < 108; i++)
+        for (int i = 0; i < deckSize * 54; i++)
         {
             cards = cardQueue.Dequeue();
-            if (i < 20)
+            if (i < cardsPerPlayer * 4)
             {
                 switch (i % 4)
                 {
@@ -112,55 +162,84 @@ public class Dealer : MonoBehaviour
             }
             else
             {
-                cards.transform.parent = GameObject.Find("Holder").transform;
-                cards.GetTargetPos = GameObject.Find("Holder").transform.position;
+                cards.transform.parent = holder.transform;
+                cards.GetTargetPos = holder.transform.position;
                 cards.gameObject.SetActive(true);
                 cards.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/CardBack");
             }
         }
         yield return new WaitForSeconds(1.2f);
-        GameObject.Find("Holder").transform.GetChild(0).transform.parent = GameObject.Find("Goal").transform;
-        GameObject.Find("Goal").transform.GetChild(0).GetComponent<Card>().GetTargetPos = GameObject.Find("Goal").transform.position;
-        Card.RevealCard(GameObject.Find("Goal").transform.GetChild(0).gameObject);
+        holder.transform.GetChild(0).transform.parent = goal.transform;
+        goal.transform.GetChild(0).GetComponent<Card>().GetTargetPos = goal.transform.position;
+        Card.RevealCard(goal.transform.GetChild(0).gameObject);
         yield return new WaitForSeconds(1.2f);
-        GameObject.Find("Canvas").transform.Find("GamePlay").gameObject.SetActive(true);   
+        GameObject.FindWithTag("GamePanel").transform.Find("GamePlay").gameObject.SetActive(true);
+        cardDealt = true;
     }
     public void Update()
     {
-        if (GameObject.Find("Canvas/GamePlay/Available") != null && GameObject.Find("Canvas/GamePlay/Available").activeInHierarchy)
+        GameObject.Find("Holder/Canvas/Available").GetComponent<TMP_Text>().text = holder.transform.childCount + " remaining";
+        if (cardDealt)
         {
-            GameObject.Find("Canvas/GamePlay/Available").GetComponent<TMP_Text>().text = GameObject.Find("Holder").transform.childCount + " available";
+            GoalCorrection();
         }
-        GoalCorrection();
+        if (cardDealt && holder.transform.childCount == 0 && recycle.transform.childCount > 0)
+        {
+            StartCoroutine(Reshuffle());
+        }
+    }
+    public IEnumerator Reshuffle()
+    {
+        if (!cardDealt)
+        {
+            yield break;
+        }
+        Transform usedCards = recycle.transform;
+        while (usedCards.childCount > 0)
+        {
+            Transform cardTransform = usedCards.GetChild(0);
+            Card card = cardTransform.GetComponent<Card>();
+            card.gameObject.SetActive(false);
+            cardLibrary.Add(card);
+            cardTransform.SetParent(null);
+        }
+        shuffle();
+        while (cardQueue.Count > 0)
+        {
+            Card card = cardQueue.Dequeue();
+            card.transform.parent = holder.transform;
+            card.GetTargetPos = holder.transform.position;
+            card.gameObject.SetActive(true);
+            card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Pokers/CardBack");
+        }
     }
     public void GoalCorrection()
     {
-        if (GameObject.Find("Goal").transform.childCount > 0)
+        if (goal.transform.childCount > 0)
         {
-            if (GameObject.Find("Goal").transform.GetChild(0).GetComponent<Card>().GetCardValue > 13)
+            if (goal.transform.GetChild(0).GetComponent<Card>().GetCardValue > 13)
             {
-                GameObject.Find("Goal").transform.GetChild(0).GetComponent<Card>().GetTargetPos = GameObject.Find("Recycle").transform.position;
-                GameObject.Find("Goal").transform.GetChild(0).transform.parent = GameObject.Find("Recycle").transform;
-                GameObject.Find("Holder").transform.GetChild(0).GetComponent<Card>().GetTargetPos = GameObject.Find("Goal").transform.position;
-                GameObject.Find("Holder").transform.GetChild(0).transform.parent = GameObject.Find("Goal").transform;
-                Card.RevealCard(GameObject.Find("Goal").transform.GetChild(0).gameObject);
+                goal.transform.GetChild(0).GetComponent<Card>().GetTargetPos = recycle.transform.position;
+                goal.transform.GetChild(0).transform.parent = recycle.transform;
+                holder.transform.GetChild(0).GetComponent<Card>().GetTargetPos = goal.transform.position;
+                holder.transform.GetChild(0).transform.parent = goal.transform;
+                Card.RevealCard(goal.transform.GetChild(0).gameObject);
             }
-            GameObject.FindObjectOfType<GameManager>().SetGoalCard();
         }
     }
-    public void DrawCard()
-    {
-        if (GameObject.Find("Holder").transform.childCount > 0)
-        {
-            GameManager gameManager = FindObjectOfType<GameManager>();
-            int currentPlayer = gameManager.currentPlayer;
-            if (currentPlayer == 1)
-            {
-                Card.RevealCard(GameObject.Find("Holder").transform.GetChild(0).gameObject);
-            }
-            GameObject.Find("Holder").transform.GetChild(0).GetComponent<Card>().GetTargetPos = GameObject.Find("Player " + currentPlayer).transform.position;
-            GameObject.Find("Holder").transform.GetChild(0).parent = GameObject.Find("Player " + currentPlayer).transform;
-            drawCount++;
-        }
-    }
+    //public void DrawCard()
+    //{
+    //    if (holder.transform.childCount > 0)
+    //    {
+    //        GameManager gameManager = FindObjectOfType<GameManager>();
+    //        int currentPlayer = gameManager.currentPlayer;
+    //        if (currentPlayer == 1)
+    //        {
+    //            Card.RevealCard(holder.transform.GetChild(0).gameObject);
+    //        }
+    //        holder.transform.GetChild(0).GetComponent<Card>().GetTargetPos = GameObject.Find("Player " + currentPlayer).transform.position;
+    //        holder.transform.GetChild(0).parent = GameObject.Find("Player " + currentPlayer).transform;
+    //        drawCount++;
+    //    }
+    //}
 }

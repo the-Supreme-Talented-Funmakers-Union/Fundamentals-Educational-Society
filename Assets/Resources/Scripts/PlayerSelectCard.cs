@@ -19,6 +19,11 @@ public class PlayerSelectCard : MonoBehaviour
                     if (highlightedCard == clickedCard)
                     {
                         DehighlightCard();
+<<<<<<< Updated upstream
+=======
+                        offset = gameObject.transform.position - GetMouseWorldPos();
+                        isDragging = true;                                            
+>>>>>>> Stashed changes
                     }
                     else
                     {

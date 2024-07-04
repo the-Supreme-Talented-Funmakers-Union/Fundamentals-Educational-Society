@@ -17,6 +17,7 @@ public class CardsInHand : MonoBehaviour
         {
             Transform card = transform.GetChild(i);
             Card cardComponent = card.GetComponent<Card>();
+            cardComponent.GetComponent<SpriteRenderer>().sortingOrder = i;
             if (transform.name == "Player 1" || transform.name == "Player 3")
             {
                 float xPos = -totalWidth / 2 + i * 0.8f;
