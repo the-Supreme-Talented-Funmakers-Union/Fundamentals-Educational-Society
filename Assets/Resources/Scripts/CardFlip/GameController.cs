@@ -97,6 +97,7 @@ public class GameController : MonoBehaviour
             btns[firstGuessIndex].image.color = new Color(0, 0, 0, 0);
             btns[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
             CheckIFtHeGameIsFinished();
+            GetComponent<ScoreManager>().score += 10;
         }
         else
         {
