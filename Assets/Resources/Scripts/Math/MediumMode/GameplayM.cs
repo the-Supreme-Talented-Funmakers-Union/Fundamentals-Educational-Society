@@ -473,9 +473,9 @@ public class GameplayM : MonoBehaviour
 
                     if (card1 != card2 && card1 != card3 && card2 != card3)
                     {
-                        foreach (var op1 in new string[] { "+", "-", "x", "¡Â", "^", "%", "=" })
+                        foreach (var op1 in new string[] { "+", "-", "x", "¡Â", "=" })
                         {
-                            foreach (var op2 in new string[] { "+", "-", "x", "¡Â", "^", "%", "=" })
+                            foreach (var op2 in new string[] { "+", "-", "x", "¡Â", "=" })
                             {
 
                                 float result = 0;
@@ -492,8 +492,6 @@ public class GameplayM : MonoBehaviour
                                             case "-": result = value1 + value2 - value3; break;
                                             case "x": result = value1 + value2 * value3; break;
                                             case "¡Â": result = value1 + value2 / value3; break;
-                                            case "^": result = (value2 != 1) ? value1 + Mathf.Pow(value2, value3) : -999; break;
-                                            case "%": result = (value2 >= value3) ? value1 + value2 % value3 : -999; break;
                                             case "=": result = (value1 + value2 == value3) ? value3 : -999; break;
                                         }
                                         break;
@@ -504,8 +502,6 @@ public class GameplayM : MonoBehaviour
                                             case "-": result = value1 - value2 - value3; break;
                                             case "x": result = value1 - value2 * value3; break;
                                             case "¡Â": result = value1 - value2 / value3; break;
-                                            case "^": result = (value2 != 1) ? value1 - Mathf.Pow(value2, value3) : -999; break;
-                                            case "%": result = (value2 >= value3) ? value1 - value2 % value3 : -999; break;
                                             case "=": result = (value1 - value2 == value3) ? value3 : -999; break;
                                         }
                                         break;
@@ -516,8 +512,6 @@ public class GameplayM : MonoBehaviour
                                             case "-": result = value1 * value2 - value3; break;
                                             case "x": result = value1 * value2 * value3; break;
                                             case "¡Â": result = value1 * value2 / value3; break;
-                                            case "^": result = (value2 != 1) ? value1 * Mathf.Pow(value2, value3) : -999; break;
-                                            case "%": result = (value1 * value2 >= value3) ? value1 * value2 % value3 : -999; break;
                                             case "=": result = (value1 * value2 == value3) ? value3 : -999; break;
                                         }
                                         break;
@@ -528,33 +522,7 @@ public class GameplayM : MonoBehaviour
                                             case "-": result = value1 / value2 - value3; break;
                                             case "x": result = value1 / value2 * value3; break;
                                             case "¡Â": result = value1 / value2 / value3; break;
-                                            case "^": result = (value2 != 1) ? value1 / Mathf.Pow(value2, value3) : -999; break;
-                                            case "%": result = (value1 / value2 >= value3) ? value1 / value2 % value3 : -999; break;
                                             case "=": result = (value1 / value2 == value3) ? value3 : -999; break;
-                                        }
-                                        break;
-                                    case "^":
-                                        switch (op2)
-                                        {
-                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, value2) + value3 : -999; break;
-                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, value2) - value3 : -999; break;
-                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, value2) * value3 : -999; break;
-                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, value2) / value3 : -999; break;
-                                            case "^": result = (value1 != 1 && Mathf.Pow(value1, value2) != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), value3) : -999; break;
-                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, value2) >= value3) ? Mathf.Pow(value1, value2) % value3 : -999; break;
-                                            case "=": result = (Mathf.Pow(value1, value2) == value3) ? value3 : -999; break;
-                                        }
-                                        break;
-                                    case "%":
-                                        switch (op2)
-                                        {
-                                            case "+": result = (value1 >= value2) ? value1 % value2 + value3 : -999; break;
-                                            case "-": result = (value1 >= value2) ? value1 % value2 - value3 : -999; break;
-                                            case "x": result = (value1 >= value2) ? value1 % value2 * value3 : -999; break;
-                                            case "¡Â": result = (value1 >= value2) ? value1 % value2 / value3 : -999; break;
-                                            case "^": result = (value1 >= Mathf.Pow(value2, value3)) ? value1 % Mathf.Pow(value2, value3) : -999; break;
-                                            case "%": result = (value1 >= value2 && value1 % value2 >= value3) ? value1 % value2 % value3 : -999; break;
-                                            case "=": result = (value1 >= value2 && value1 % value2 == value3) ? value3 : -999; break;
                                         }
                                         break;
                                     case "=":
@@ -564,8 +532,6 @@ public class GameplayM : MonoBehaviour
                                             case "-": result = (value1 == value2) ? value2 - value3 : -999; break;
                                             case "x": result = (value1 == value2) ? value2 * value3 : -999; break;
                                             case "¡Â": result = (value1 == value2) ? value2 / value3 : -999; break;
-                                            case "^": result = (value1 == value2) ? Mathf.Pow(value2, value3) : -999; break;
-                                            case "%": result = (value1 == value2 && value2 >= value3) ? value2 % value3 : -999; break;
                                             case "=": result = (value1 == value2 && value2 == value3) ? value3 : -999; break;
                                         }
                                         break;

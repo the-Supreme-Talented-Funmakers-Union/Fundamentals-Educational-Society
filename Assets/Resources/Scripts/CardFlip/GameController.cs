@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -19,17 +20,39 @@ public class GameController : MonoBehaviour
     private int gameGuesses;
     private int firstGuessIndex, secondGuessIndex;
     private string firstGuessPuzzle, secondGuessPuzzle;
+
+    public Image fadeImage;
+    public float fadeInDuration = 2.0f;
+    public float fadeOutDuration = 2.0f;
     private void Awake()
     {
         puzzles = Resources.LoadAll<Sprite>("Sprites/vegetable-fruits");
     }
     private void Start()
     {
+        Color color = fadeImage.color;
+        color.a = 1.0f;
+        StartCoroutine(FadeInScene());
         GetButtons();
         AddListeners();
         AddGamePuzzles();
         Shuffle(gamePuzzles);
         gameGuesses = gamePuzzles.Count / 2;
+    }
+    IEnumerator FadeInScene()
+    {
+        float elapsedTime = 0.0f;
+        Color color = fadeImage.color;
+        while (elapsedTime < fadeInDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeInDuration);
+            fadeImage.color = color;
+            yield return null;
+        }
+        color.a = 0.0f;
+        fadeImage.color = color;
+        fadeImage.gameObject.SetActive(false);
     }
 
     void GetButtons()
@@ -127,5 +150,25 @@ public class GameController : MonoBehaviour
             list[i] = list[randomIndex];
             list[randomIndex] = temp;
         }
+    }
+    public void ExitGame()
+    {
+        StartCoroutine(FadeOutScene());
+    }
+    IEnumerator FadeOutScene()
+    {
+        fadeImage.gameObject.SetActive(true);
+        float elapsedTime = 0.0f;
+        Color color = fadeImage.color;
+        while (elapsedTime < fadeOutDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Clamp01(elapsedTime / fadeOutDuration);
+            fadeImage.color = color;
+            yield return null;
+        }
+        color.a = 1.0f;
+        fadeImage.color = color;
+        SceneManager.LoadScene(1);
     }
 }

@@ -319,7 +319,7 @@ public class GameplayE : MonoBehaviour
             {
                 if (card1 != card2)
                 {
-                    foreach (var op in new string[] { "+", "-", "x", "¡Â", "^", "=" })
+                    foreach (var op in new string[] { "+", "-", "x", "¡Â", "=" })
                     {
                         float result = 0;
                         float value1 = (float)card1.GetCardValue;
@@ -331,8 +331,7 @@ public class GameplayE : MonoBehaviour
                             case "-": result = value1 - value2; break;
                             case "x": result = value1 * value2; break;
                             case "¡Â": result = value1 / value2; break;
-                            case "^": result = (value1 != 1) ? Mathf.Pow(value1, value2) : -999; break;
-                            case "=": result = (value1 == value2) ? value1 : 0; break;
+                            case "=": result = (value1 == value2) ? value1 : -999; break;
                         }
                         if (Mathf.Approximately(result, goal))
                         {
