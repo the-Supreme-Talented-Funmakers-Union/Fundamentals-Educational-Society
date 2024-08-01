@@ -3,7 +3,20 @@ guid: c04b3175befff4e49b1005cc2669d9d2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gameplay: {instanceID: 0}
+  - cardImage: {instanceID: 0}
+  - cardDeck: {instanceID: 0}
+  - cardHolder: {instanceID: 0}
+  - cardRecycler: {instanceID: 0}
+  - cardGoal: {instanceID: 0}
+  - player1: {instanceID: 0}
+  - player2: {instanceID: 0}
+  - player3: {instanceID: 0}
+  - player4: {instanceID: 0}
+  - gameSet: {instanceID: 0}
+  - UI: {instanceID: 0}
+  - dealSound: {fileID: 8300000, guid: 43ec35bb29a638c468605afb8fa3f5f9, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

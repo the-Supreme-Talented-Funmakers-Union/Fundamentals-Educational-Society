@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class ButtonE : MonoBehaviour
 {
     public GameplayE gameplay;
@@ -8,27 +9,46 @@ public class ButtonE : MonoBehaviour
     public GameObject draw;
     public GameObject skip;
     public int drawCount = 0 ;
-    public string[] operators = { "+", "-", "x", "¡Â", "^", "=" };
+    public string[] operators = { "+", "-", "x", "Ã·", "^", "=" };
+
+    private AudioSource audioSource;
+    public AudioClip buttonClickSound;
+
+    void Start()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        buttonClickSound = Resources.Load<AudioClip>("Audio/buttonClick");
+        audioSource.clip = buttonClickSound;
+        audioSource.playOnAwake = false; 
+    }
+
     public void ClassBegin(GameObject button)
     {
+        PlayButtonClickSound();
         StartCoroutine(dealer.Deal());
         button.SetActive(false);
     }
+
     public void CycleOperator(TMP_Text operatorText)
     {
         if (gameplay.currentPlayer == 1)
         {
+            PlayButtonClickSound();
             int currentOperatorIndex = System.Array.IndexOf(operators, operatorText.text);
             currentOperatorIndex = (currentOperatorIndex + 1) % operators.Length;
             operatorText.text = operators[currentOperatorIndex];
         }
     }
+
     public void Confirm()
     {
+        PlayButtonClickSound();
         StartCoroutine(gameplay.ConfirmSelection());
     }
+
     public void DrawCard()
     {
+        PlayButtonClickSound();
         if (!gameplay.newGoal)
         {
             dealer.Draw();
@@ -36,8 +56,10 @@ public class ButtonE : MonoBehaviour
             CheckDraw();
         }
     }
+
     public void SkipTurn()
     {
+        PlayButtonClickSound();
         switch (gameplay.currentPlayer)
         {
             case 1:
@@ -107,8 +129,10 @@ public class ButtonE : MonoBehaviour
             StartCoroutine(gameplay.AITurn(gameplay.currentPlayer)); 
         }
     }
+
     public void SetGoal(int cardslot)
     {
+        PlayButtonClickSound();
         if (gameplay.newGoal)
         {
             dealer.cardGoal.GetChild(0).GetComponent<Card>().GetTargetPos = dealer.cardRecycler.position;
@@ -140,6 +164,7 @@ public class ButtonE : MonoBehaviour
             StartCoroutine(gameplay.AITurn(gameplay.currentPlayer));
         }
     }
+
     public void CheckDraw()
     {
         if (drawCount == 5)
@@ -153,8 +178,15 @@ public class ButtonE : MonoBehaviour
             draw.SetActive(true);
         }
     }
+
     public void ExitGame()
     {
+        PlayButtonClickSound();
         SceneManager.LoadScene(1);
+    }
+
+    private void PlayButtonClickSound()
+    {
+        audioSource.PlayOneShot(buttonClickSound);
     }
 }
