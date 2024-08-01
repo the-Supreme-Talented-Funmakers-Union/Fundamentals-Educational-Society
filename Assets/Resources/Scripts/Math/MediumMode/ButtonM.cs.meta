@@ -3,7 +3,12 @@ guid: f4dfbdb796fae9f47af29789168aa9c2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gameplay: {instanceID: 0}
+  - dealer: {instanceID: 0}
+  - draw: {instanceID: 0}
+  - skip: {instanceID: 0}
+  - buttonClickSound: {fileID: 8300000, guid: 3da2d06f91a0ebb4686f82a8119f5e5d, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
