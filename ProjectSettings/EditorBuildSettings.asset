@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Start Scene.unity
+    path: Assets/Scenes/Tile Scene.unity
     guid: 2e22ad7b594375e478125100e86b943b
   - enabled: 1
-    path: Assets/Scenes/Template.unity
+    path: Assets/Scenes/Selection Scene.unity
     guid: a32323ee397d6c04b9270c9b53ccc150
+  - enabled: 1
+    path: Assets/Scenes/Math Scene.unity
+    guid: 4ab7886c75e42a747a8b1092b1098296
   - enabled: 1
     path: Assets/Scenes/CardFlip Scene.unity
     guid: abc2aa5a698df4e4aac6e96418876907
-  - enabled: 1
-    path: Assets/Scenes/Math.unity
-    guid: 4ab7886c75e42a747a8b1092b1098296
   m_configObjects: {}

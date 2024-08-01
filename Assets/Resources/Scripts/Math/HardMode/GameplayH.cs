@@ -1395,11 +1395,11 @@ public class GameplayH : MonoBehaviour
 
                         if (card1 != card2 && card1 != card3 && card1 != card4 && card2 != card3 && card2 != card4 && card3 != card4)
                         {
-                            foreach (var op1 in new string[] { "+", "-", "x", "¡Â", "%", "^", "¡Ì", "=" })
+                            foreach (var op1 in new string[] { "+", "-", "x", "¡Â", "=" })
                             {
-                                foreach (var op2 in new string[] { "+", "-", "x", "¡Â", "%", "^", "¡Ì", "=" })
+                                foreach (var op2 in new string[] { "+", "-", "x", "¡Â", "=" })
                                 {
-                                    foreach (var op3 in new string[] { "+", "-", "x", "¡Â", "%", "^", "¡Ì", "=" })
+                                    foreach (var op3 in new string[] { "+", "-", "x", "¡Â", "=" })
                                     {
 
                                         float result = 0;
@@ -1420,9 +1420,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 + value2 + value3 - value4; break;
                                                             case "x": result = value1 + value2 + value3 * value4; break;
                                                             case "¡Â": result = value1 + value2 + value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 + value2 + value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 + value2 + Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 + value2 + Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 + value2 + value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1433,9 +1430,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 + value2 - value3 - value4; break;
                                                             case "x": result = value1 + value2 - value3 * value4; break;
                                                             case "¡Â": result = value1 + value2 - value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 + value2 - value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 + value2 - Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 + value2 - Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 + value2 - value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1446,9 +1440,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 + value2 * value3 - value4; break;
                                                             case "x": result = value1 + value2 * value3 * value4; break;
                                                             case "¡Â": result = value1 + value2 * value3 / value4; break;
-                                                            case "%": result = (value2 * value3 >= value4) ? value1 + value2 * value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 + value2 * Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 + value2 * Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 + value2 * value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1459,49 +1450,7 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 + value2 / value3 - value4; break;
                                                             case "x": result = value1 + value2 / value3 * value4; break;
                                                             case "¡Â": result = value1 + value2 / value3 / value4; break;
-                                                            case "%": result = (value2 / value3 >= value4) ? value1 + value2 / value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 + value2 / Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 + value2 / Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 + value2 / value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 >= value3) ? value1 + value2 % value3 + value4 : -999; break;
-                                                            case "-": result = (value2 >= value3) ? value1 + value2 % value3 - value4 : -999; break;
-                                                            case "x": result = (value2 >= value3) ? value1 + value2 % value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value2 >= value3) ? value1 + value2 % value3 / value4 : -999; break;
-                                                            case "%": result = (value2 >= value3 && value2 % value3 >= value4) ? value1 + value2 % value3 % value4 : -999; break;
-                                                            case "^": result = (value2 >= Mathf.Pow(value3, value4) && value3 != 1) ? value1 + value2 % Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value2 >= Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 + value2 % Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 >= value3 && value1 + value2 % value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 + Mathf.Pow(value2, value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 + Mathf.Pow(value2, value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 + Mathf.Pow(value2, value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 + Mathf.Pow(value2, value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && Mathf.Pow(value2, value3) >= value4) ? value1 + Mathf.Pow(value2, value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 + Mathf.Pow(Mathf.Pow(value2, value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 + Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 + Mathf.Pow(value2, value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 + Mathf.Pow(value2, 1.0f / value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 + Mathf.Pow(value2, 1.0f / value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 + Mathf.Pow(value2, 1.0f / value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 + Mathf.Pow(value2, 1.0f / value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && Mathf.Pow(value2, 1.0f / value3) >= value4) ? value1 + Mathf.Pow(value2, 1.0f / value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 + Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 + Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 + Mathf.Pow(value2, 1.0f / value3) == value4) ? value4 : -999; break;
                                                         }
                                                         break;
                                                     case "=":
@@ -1511,9 +1460,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 + value2 == value3 - value4) ? value1 + value2 : -999; break;
                                                             case "x": result = (value1 + value2 == value3 * value4) ? value1 + value2 : -999; break;
                                                             case "¡Â": result = (value1 + value2 == value3 / value4) ? value1 + value2 : -999; break;
-                                                            case "%": result = (value1 + value2 == value3 % value4 && value3 >= value4) ? value1 + value2 : -999; break;
-                                                            case "^": result = (value1 + value2 == Mathf.Pow(value3, value4) && value3 != 1) ? value1 + value2 : -999; break;
-                                                            case "¡Ì": result = (value1 + value2 == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 + value2 : -999; break;
                                                             case "=": result = (value1 + value2 == value3 && value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1529,9 +1475,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 - value2 + value3 - value4; break;
                                                             case "x": result = value1 - value2 + value3 * value4; break;
                                                             case "¡Â": result = value1 - value2 + value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 - value2 + value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 - value2 + Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 - value2 + Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 - value2 + value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1542,9 +1485,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 - value2 - value3 - value4; break;
                                                             case "x": result = value1 - value2 - value3 * value4; break;
                                                             case "¡Â": result = value1 - value2 - value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 - value2 - value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 - value2 - Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 - value2 - Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 - value2 - value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1555,9 +1495,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 - value2 * value3 - value4; break;
                                                             case "x": result = value1 - value2 * value3 * value4; break;
                                                             case "¡Â": result = value1 - value2 * value3 / value4; break;
-                                                            case "%": result = (value2 * value3 >= value4) ? value1 - value2 * value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 - value2 * Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 - value2 * Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 - value2 * value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1568,49 +1505,7 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 - value2 / value3 - value4; break;
                                                             case "x": result = value1 - value2 / value3 * value4; break;
                                                             case "¡Â": result = value1 - value2 / value3 / value4; break;
-                                                            case "%": result = (value2 / value3 >= value4) ? value1 - value2 / value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 - value2 / Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 - value2 / Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 - value2 / value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 >= value3) ? value1 - value2 % value3 + value4 : -999; break;
-                                                            case "-": result = (value2 >= value3) ? value1 - value2 % value3 - value4 : -999; break;
-                                                            case "x": result = (value2 >= value3) ? value1 - value2 % value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value2 >= value3) ? value1 - value2 % value3 / value4 : -999; break;
-                                                            case "%": result = (value2 >= value3 && value2 % value3 >= value4) ? value1 - value2 % value3 % value4 : -999; break;
-                                                            case "^": result = (value2 >= Mathf.Pow(value3, value4) && value3 != 1) ? value1 - value2 % Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value2 >= Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 - value2 % Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 >= value3 && value1 - value2 % value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 - Mathf.Pow(value2, value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 - Mathf.Pow(value2, value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 - Mathf.Pow(value2, value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 - Mathf.Pow(value2, value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && Mathf.Pow(value2, value3) >= value4) ? value1 - Mathf.Pow(value2, value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 - Mathf.Pow(Mathf.Pow(value2, value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 - Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 - Mathf.Pow(value2, value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 - Mathf.Pow(value2, 1.0f / value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 - Mathf.Pow(value2, 1.0f / value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 - Mathf.Pow(value2, 1.0f / value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 - Mathf.Pow(value2, 1.0f / value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && Mathf.Pow(value2, 1.0f / value3) >= value4) ? value1 - Mathf.Pow(value2, 1.0f / value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 - Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 - Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 - Mathf.Pow(value2, 1.0f / value3) == value4) ? value4 : -999; break;
                                                         }
                                                         break;
                                                     case "=":
@@ -1620,9 +1515,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 - value2 == value3 - value4) ? value1 - value2 : -999; break;
                                                             case "x": result = (value1 - value2 == value3 * value4) ? value1 - value2 : -999; break;
                                                             case "¡Â": result = (value1 - value2 == value3 / value4) ? value1 - value2 : -999; break;
-                                                            case "%": result = (value1 - value2 == value3 % value4 && value3 >= value4) ? value1 - value2 : -999; break;
-                                                            case "^": result = (value1 - value2 == Mathf.Pow(value3, value4) && value3 != 1) ? value1 - value2 : -999; break;
-                                                            case "¡Ì": result = (value1 - value2 == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 - value2 : -999; break;
                                                             case "=": result = (value1 - value2 == value3 && value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1638,9 +1530,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 * value2 + value3 - value4; break;
                                                             case "x": result = value1 * value2 + value3 * value4; break;
                                                             case "¡Â": result = value1 * value2 + value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 * value2 + value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 * value2 + Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 * value2 + Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 * value2 + value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1651,9 +1540,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 * value2 - value3 - value4; break;
                                                             case "x": result = value1 * value2 - value3 * value4; break;
                                                             case "¡Â": result = value1 * value2 - value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 * value2 - value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 * value2 - Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 * value2 - Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 * value2 - value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1664,9 +1550,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 * value2 * value3 - value4; break;
                                                             case "x": result = value1 * value2 * value3 * value4; break;
                                                             case "¡Â": result = value1 * value2 * value3 / value4; break;
-                                                            case "%": result = (value1 * value2 * value3 >= value4) ? value1 * value2 * value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 * value2 * Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 * value2 * Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 * value2 * value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1677,49 +1560,7 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 * value2 / value3 - value4; break;
                                                             case "x": result = value1 * value2 / value3 * value4; break;
                                                             case "¡Â": result = value1 * value2 / value3 / value4; break;
-                                                            case "%": result = (value1 * value2 / value3 >= value4) ? value1 * value2 / value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 * value2 / Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 * value2 / Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 * value2 / value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 * value2 >= value3) ? value1 * value2 % value3 + value4 : -999; break;
-                                                            case "-": result = (value1 * value2 >= value3) ? value1 * value2 % value3 - value4 : -999; break;
-                                                            case "x": result = (value1 * value2 >= value3) ? value1 * value2 % value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 * value2 >= value3) ? value1 * value2 % value3 / value4 : -999; break;
-                                                            case "%": result = (value1 * value2 >= value3 && value1 * value2 % value3 >= value4) ? value1 * value2 % value3 % value4 : -999; break;
-                                                            case "^": result = (value1 * value2 >= Mathf.Pow(value3, value4) && value3 != 1) ? value1 * value2 % Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 * value2 >= Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 * value2 % Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 * value2 >= value3 && value1 * value2 % value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 * Mathf.Pow(value2, value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 * Mathf.Pow(value2, value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 * Mathf.Pow(value2, value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 * Mathf.Pow(value2, value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && value1 * Mathf.Pow(value2, value3) >= value4) ? value1 * Mathf.Pow(value2, value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 * Mathf.Pow(Mathf.Pow(value2, value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 * Mathf.Pow(Mathf.Pow(value2, value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 * Mathf.Pow(value2, value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 * Mathf.Pow(value2, 1.0f / value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 * Mathf.Pow(value2, 1.0f / value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 * Mathf.Pow(value2, 1.0f / value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 * Mathf.Pow(value2, 1.0f / value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && value1 * Mathf.Pow(value2, 1.0f / value3) >= value4) ? value1 * Mathf.Pow(value2, 1.0f / value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 * Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 * Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 * Mathf.Pow(value2, 1.0f / value3) == value4) ? value4 : -999; break;
                                                         }
                                                         break;
                                                     case "=":
@@ -1729,9 +1570,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 * value2 == value3 - value4) ? value1 * value2 : -999; break;
                                                             case "x": result = (value1 * value2 == value3 * value4) ? value1 * value2 : -999; break;
                                                             case "¡Â": result = (value1 * value2 == value3 / value4) ? value1 * value2 : -999; break;
-                                                            case "%": result = (value1 * value2 == value3 % value4 && value3 >= value4) ? value1 * value2 : -999; break;
-                                                            case "^": result = (value1 * value2 == Mathf.Pow(value3, value4) && value3 != 1) ? value1 * value2 : -999; break;
-                                                            case "¡Ì": result = (value1 * value2 == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 * value2 : -999; break;
                                                             case "=": result = (value1 * value2 == value3 && value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1747,9 +1585,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 / value2 + value3 - value4; break;
                                                             case "x": result = value1 / value2 + value3 * value4; break;
                                                             case "¡Â": result = value1 / value2 + value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 / value2 + value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 / value2 + Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 / value2 + Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 / value2 + value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1760,9 +1595,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 / value2 - value3 - value4; break;
                                                             case "x": result = value1 / value2 - value3 * value4; break;
                                                             case "¡Â": result = value1 / value2 - value3 / value4; break;
-                                                            case "%": result = (value3 >= value4) ? value1 / value2 - value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 / value2 - Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 / value2 - Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 / value2 - value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1773,9 +1605,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 / value2 * value3 - value4; break;
                                                             case "x": result = value1 / value2 * value3 * value4; break;
                                                             case "¡Â": result = value1 / value2 * value3 / value4; break;
-                                                            case "%": result = (value1 / value2 * value3 >= value4) ? value1 / value2 * value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 / value2 * Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 / value2 * Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 / value2 * value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
@@ -1786,49 +1615,7 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = value1 / value2 / value3 - value4; break;
                                                             case "x": result = value1 / value2 / value3 * value4; break;
                                                             case "¡Â": result = value1 / value2 / value3 / value4; break;
-                                                            case "%": result = (value1 / value2 / value3 >= value4) ? value1 / value2 / value3 % value4 : -999; break;
-                                                            case "^": result = (value3 != 1) ? value1 / value2 / Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value3 != 1) ? value1 / value2 / Mathf.Pow(value3, 1.0f / value4) : -999; break;
                                                             case "=": result = (value1 / value2 / value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 / value2 >= value3) ? value1 / value2 % value3 + value4 : -999; break;
-                                                            case "-": result = (value1 / value2 >= value3) ? value1 / value2 % value3 - value4 : -999; break;
-                                                            case "x": result = (value1 / value2 >= value3) ? value1 / value2 % value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 / value2 >= value3) ? value1 / value2 % value3 / value4 : -999; break;
-                                                            case "%": result = (value1 / value2 >= value3 && value1 / value2 % value3 >= value4) ? value1 / value2 % value3 % value4 : -999; break;
-                                                            case "^": result = (value1 / value2 >= Mathf.Pow(value3, value4) && value3 != 1) ? value1 / value2 % Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 / value2 >= Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 / value2 % Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 / value2 >= value3 && value1 / value2 % value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 / Mathf.Pow(value2, value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 / Mathf.Pow(value2, value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 / Mathf.Pow(value2, value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 / Mathf.Pow(value2, value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && value1 / Mathf.Pow(value2, value3) >= value4) ? value1 / Mathf.Pow(value2, value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 / Mathf.Pow(Mathf.Pow(value2, value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 / Mathf.Pow(Mathf.Pow(value2, value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 / Mathf.Pow(value2, value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value2 != 1) ? value1 / Mathf.Pow(value2, 1.0f / value3) + value4 : -999; break;
-                                                            case "-": result = (value2 != 1) ? value1 / Mathf.Pow(value2, 1.0f / value3) - value4 : -999; break;
-                                                            case "x": result = (value2 != 1) ? value1 / Mathf.Pow(value2, 1.0f / value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value2 != 1) ? value1 / Mathf.Pow(value2, 1.0f / value3) / value4 : -999; break;
-                                                            case "%": result = (value2 != 1 && value1 / Mathf.Pow(value2, 1.0f / value3) >= value4) ? value1 / Mathf.Pow(value2, 1.0f / value3) % value4 : -999; break;
-                                                            case "^": result = (value2 != 1) ? value1 / Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value2 != 1) ? value1 / Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value2 != 1 && value1 / Mathf.Pow(value2, 1.0f / value3) == value4) ? value4 : -999; break;
                                                         }
                                                         break;
                                                     case "=":
@@ -1838,337 +1625,7 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 / value2 == value3 - value4) ? value1 / value2 : -999; break;
                                                             case "x": result = (value1 / value2 == value3 * value4) ? value1 / value2 : -999; break;
                                                             case "¡Â": result = (value1 / value2 == value3 / value4) ? value1 / value2 : -999; break;
-                                                            case "%": result = (value1 / value2 == value3 % value4 && value3 >= value4) ? value1 / value2 : -999; break;
-                                                            case "^": result = (value1 / value2 == Mathf.Pow(value3, value4) && value3 != 1) ? value1 / value2 : -999; break;
-                                                            case "¡Ì": result = (value1 / value2 == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 / value2 : -999; break;
                                                             case "=": result = (value1 / value2 == value3 && value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                }
-                                                break;
-                                            case "%":
-                                                switch (op2)
-                                                {
-                                                    case "+":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2) ? value1 % value2 + value3 + value4 : -999; break;
-                                                            case "-": result = (value1 >= value2) ? value1 % value2 + value3 - value4 : -999; break;
-                                                            case "x": result = (value1 >= value2) ? value1 % value2 + value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2) ? value1 % value2 + value3 / value4 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value3 >= value4) ? value1 % value2 + value3 % value4 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value3 != 1) ? value1 % value2 + Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value3 != 1) ? value1 % value2 + Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 >= value2 && value1 % value2 + value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "-":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2) ? value1 % value2 - value3 + value4 : -999; break;
-                                                            case "-": result = (value1 >= value2) ? value1 % value2 - value3 - value4 : -999; break;
-                                                            case "x": result = (value1 >= value2) ? value1 % value2 - value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2) ? value1 % value2 - value3 / value4 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value3 >= value4) ? value1 % value2 - value3 % value4 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value3 != 1) ? value1 % value2 - Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value3 != 1) ? value1 % value2 - Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 >= value2 && value1 % value2 - value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "x":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2) ? value1 % value2 * value3 + value4 : -999; break;
-                                                            case "-": result = (value1 >= value2) ? value1 % value2 * value3 - value4 : -999; break;
-                                                            case "x": result = (value1 >= value2) ? value1 % value2 * value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2) ? value1 % value2 * value3 / value4 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value1 % value2 * value3 >= value4) ? value1 % value2 * value3 % value4 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value3 != 1) ? value1 % value2 * Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value3 != 1) ? value1 % value2 * Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 >= value2 && value1 % value2 * value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Â":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2) ? value1 % value2 / value3 + value4 : -999; break;
-                                                            case "-": result = (value1 >= value2) ? value1 % value2 / value3 - value4 : -999; break;
-                                                            case "x": result = (value1 >= value2) ? value1 % value2 / value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2) ? value1 % value2 / value3 / value4 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value1 % value2 / value3 >= value4) ? value1 % value2 / value3 % value4 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value3 != 1) ? value1 % value2 / Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value3 != 1) ? value1 % value2 / Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 >= value2 && value1 % value2 / value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2 && value1 % value2 >= value3) ? value1 % value2 % value3 + value4 : -999; break;
-                                                            case "-": result = (value1 >= value2 && value1 % value2 >= value3) ? value1 % value2 % value3 - value4 : -999; break;
-                                                            case "x": result = (value1 >= value2 && value1 % value2 >= value3) ? value1 % value2 % value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2 && value1 % value2 >= value3) ? value1 % value2 % value3 / value4 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value1 % value2 >= value3 && value1 % value2 % value3 >= value4) ? value1 % value2 % value3 % value4 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value1 % value2 >= Mathf.Pow(value3, value4) && value3 != 1) ? value1 % value2 % Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value1 % value2 >= Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 % value2 % Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 >= value2 && value1 % value2 >= value3 && value1 % value2 % value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, value3) + value4 : -999; break;
-                                                            case "-": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, value3) - value4 : -999; break;
-                                                            case "x": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, value3) / value4 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value2 != 1 && value1 % Mathf.Pow(value2, value3) >= value4) ? value1 % Mathf.Pow(value2, value3) % value4 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(Mathf.Pow(value2, value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(Mathf.Pow(value2, value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 >= value2 && value2 != 1 && value1 % Mathf.Pow(value2, value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, 1.0f / value3) + value4 : -999; break;
-                                                            case "-": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, 1.0f / value3) - value4 : -999; break;
-                                                            case "x": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, 1.0f / value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(value2, 1.0f / value3) / value4 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value2 != 1 && value1 % Mathf.Pow(value2, 1.0f / value3) >= value4) ? value1 % Mathf.Pow(value2, 1.0f / value3) % value4 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value2 != 1) ? value1 % Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 >= value2 && value2 != 1 && value1 % Mathf.Pow(value2, 1.0f / value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "=":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 >= value2 && value1 % value2 == value3 + value4) ? value1 % value2 : -999; break;
-                                                            case "-": result = (value1 >= value2 && value1 % value2 == value3 - value4) ? value1 % value2 : -999; break;
-                                                            case "x": result = (value1 >= value2 && value1 % value2 == value3 * value4) ? value1 % value2 : -999; break;
-                                                            case "¡Â": result = (value1 >= value2 && value1 % value2 == value3 / value4) ? value1 % value2 : -999; break;
-                                                            case "%": result = (value1 >= value2 && value1 % value2 == value3 % value4 && value3 >= value4) ? value1 % value2 : -999; break;
-                                                            case "^": result = (value1 >= value2 && value1 % value2 == Mathf.Pow(value3, value4) && value3 != 1) ? value1 % value2 : -999; break;
-                                                            case "¡Ì": result = (value1 >= value2 && value1 % value2 == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 % value2 : -999; break;
-                                                            case "=": result = (value1 >= value2 && value1 % value2 == value3 && value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                }
-                                                break;
-                                            case "^":
-                                                switch (op2)
-                                                {
-                                                    case "+":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, value2) + value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, value2) + value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, value2) + value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, value2) + value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && value3 >= value4) ? Mathf.Pow(value1, value2) + value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) + Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) + Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, value2) + value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "-":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, value2) - value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, value2) - value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, value2) - value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, value2) - value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && value3 >= value4) ? Mathf.Pow(value1, value2) - value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) - Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) - Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, value2) - value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "x":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, value2) * value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, value2) * value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, value2) * value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, value2) * value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, value2) * value3 >= value4) ? Mathf.Pow(value1, value2) * value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) * Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) * Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, value2) * value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Â":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, value2) / value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, value2) / value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, value2) / value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, value2) / value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, value2) / value3 >= value4) ? Mathf.Pow(value1, value2) / value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) / Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, value2) / Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, value2) / value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1 && Mathf.Pow(value1, value2) >= value3) ? Mathf.Pow(value1, value2) % value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1 && Mathf.Pow(value1, value2) >= value3) ? Mathf.Pow(value1, value2) % value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1 && Mathf.Pow(value1, value2) >= value3) ? Mathf.Pow(value1, value2) % value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1 && Mathf.Pow(value1, value2) >= value3) ? Mathf.Pow(value1, value2) % value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, value2) >= value3 && value2 % Mathf.Pow(value1, value2) % value3 >= value4) ? Mathf.Pow(value1, value2) % value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && Mathf.Pow(value1, value2) >= Mathf.Pow(value3, value4)) ? Mathf.Pow(value1, value2) % Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && Mathf.Pow(value1, value2) >= Mathf.Pow(value3, 1.0f / value4)) ? Mathf.Pow(value1, value2) % Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, value2) >= value3 && Mathf.Pow(value1, value2) % value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), value3) + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), value3) - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), value3) / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, value2), value3) >= value4) ? Mathf.Pow(Mathf.Pow(value1, value2), value3) % value4 : -999; break;
-                                                            case "^": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, value2), value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, value2), value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, value2), value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3) + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3) - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3) / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3) >= value4) ? Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3) % value4 : -999; break;
-                                                            case "^": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, value2), 1.0f / value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "=":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1 && Mathf.Pow(value1, value2) == value3 + value4) ? Mathf.Pow(value1, value2) : -999; break;
-                                                            case "-": result = (value1 != 1 && Mathf.Pow(value1, value2) == value3 - value4) ? Mathf.Pow(value1, value2) : -999; break;
-                                                            case "x": result = (value1 != 1 && Mathf.Pow(value1, value2) == value3 * value4) ? Mathf.Pow(value1, value2) : -999; break;
-                                                            case "¡Â": result = (value1 != 1 && Mathf.Pow(value1, value2) == value3 / value4) ? Mathf.Pow(value1, value2) : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, value2) == value3 % value4 && value3 >= value4) ? Mathf.Pow(value1, value2) : -999; break;
-                                                            case "^": result = (value1 != 1 && Mathf.Pow(value1, value2) == Mathf.Pow(value3, value4) && value3 != 1) ? Mathf.Pow(value1, value2) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && Mathf.Pow(value1, value2) == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? Mathf.Pow(value1, value2) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, value2) == value3 && value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                }
-                                                break;
-                                            case "¡Ì":
-                                                switch (op2)
-                                                {
-                                                    case "+":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) + value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) + value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) + value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) + value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && value3 >= value4) ? Mathf.Pow(value1, 1.0f / value2) + value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) + Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) + Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) + value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "-":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) - value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) - value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) - value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) - value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && value3 >= value4) ? Mathf.Pow(value1, 1.0f / value2) - value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) - Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) - Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) - value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "x":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) * value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) * value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) * value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) * value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) * value3 >= value4) ? Mathf.Pow(value1, 1.0f / value2) * value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) * Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) * Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) * value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Â":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) / value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) / value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) / value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(value1, 1.0f / value2) / value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) / value3 >= value4) ? Mathf.Pow(value1, 1.0f / value2) / value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) / Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) / Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) / value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= value3) ? Mathf.Pow(value1, 1.0f / value2) % value3 + value4 : -999; break;
-                                                            case "-": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= value3) ? Mathf.Pow(value1, 1.0f / value2) % value3 - value4 : -999; break;
-                                                            case "x": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= value3) ? Mathf.Pow(value1, 1.0f / value2) % value3 * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= value3) ? Mathf.Pow(value1, 1.0f / value2) % value3 / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= value3 && value2 % Mathf.Pow(value1, 1.0f / value2) % value3 >= value4) ? Mathf.Pow(value1, 1.0f / value2) % value3 % value4 : -999; break;
-                                                            case "^": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= Mathf.Pow(value3, value4)) ? Mathf.Pow(value1, 1.0f / value2) % Mathf.Pow(value3, value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= Mathf.Pow(value3, 1.0f / value4)) ? Mathf.Pow(value1, 1.0f / value2) % Mathf.Pow(value3, 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) >= value3 && Mathf.Pow(value1, 1.0f / value2) % value3 == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3) + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3) - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3) / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3) >= value4) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3) % value4 : -999; break;
-                                                            case "^": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3) + value4 : -999; break;
-                                                            case "-": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3) - value4 : -999; break;
-                                                            case "x": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3) * value4 : -999; break;
-                                                            case "¡Â": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3) / value4 : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3) >= value4) ? Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3) % value4 : -999; break;
-                                                            case "^": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3), value4) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1) ? Mathf.Pow(Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3), 1.0f / value4) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(Mathf.Pow(value1, 1.0f / value2), 1.0f / value3) == value4) ? value4 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "=":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == value3 + value4) ? Mathf.Pow(value1, 1.0f / value2) : -999; break;
-                                                            case "-": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == value3 - value4) ? Mathf.Pow(value1, 1.0f / value2) : -999; break;
-                                                            case "x": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == value3 * value4) ? Mathf.Pow(value1, 1.0f / value2) : -999; break;
-                                                            case "¡Â": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == value3 / value4) ? Mathf.Pow(value1, 1.0f / value2) : -999; break;
-                                                            case "%": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == value3 % value4 && value3 >= value4) ? Mathf.Pow(value1, 1.0f / value2) : -999; break;
-                                                            case "^": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == Mathf.Pow(value3, value4) && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) : -999; break;
-                                                            case "¡Ì": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? Mathf.Pow(value1, 1.0f / value2) : -999; break;
-                                                            case "=": result = (value1 != 1 && Mathf.Pow(value1, 1.0f / value2) == value3 && value3 == value4) ? value4 : -999; break;
                                                         }
                                                         break;
                                                 }
@@ -2183,9 +1640,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 == value2 + value3 - value4) ? value1 : -999; break;
                                                             case "x": result = (value1 == value2 + value3 * value4) ? value1 : -999; break;
                                                             case "¡Â": result = (value1 == value2 + value3 / value4) ? value1 : -999; break;
-                                                            case "%": result = (value1 == value2 + value3 % value4 && value3 >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == value2 + Mathf.Pow(value3, value4) && value3 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == value2 + Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 : -999; break;
                                                             case "=": result = (value1 == value2 + value3 && value2 + value3 == value4) ? value1 : -999; break;
                                                         }
                                                         break;
@@ -2196,9 +1650,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 == value2 - value3 - value4) ? value1 : -999; break;
                                                             case "x": result = (value1 == value2 - value3 * value4) ? value1 : -999; break;
                                                             case "¡Â": result = (value1 == value2 - value3 / value4) ? value1 : -999; break;
-                                                            case "%": result = (value1 == value2 - value3 % value4 && value3 >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == value2 - Mathf.Pow(value3, value4) && value3 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == value2 - Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 : -999; break;
                                                             case "=": result = (value1 == value2 - value3 && value2 - value3 == value4) ? value1 : -999; break;
                                                         }
                                                         break;
@@ -2209,9 +1660,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 == value2 * value3 - value4) ? value1 : -999; break;
                                                             case "x": result = (value1 == value2 * value3 * value4) ? value1 : -999; break;
                                                             case "¡Â": result = (value1 == value2 * value3 / value4) ? value1 : -999; break;
-                                                            case "%": result = (value1 == value2 * value3 % value4 && value2 * value3 >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == value2 * Mathf.Pow(value3, value4) && value3 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == value2 * Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 : -999; break;
                                                             case "=": result = (value1 == value2 * value3 && value2 * value3 == value4) ? value1 : -999; break;
                                                         }
                                                         break;
@@ -2222,49 +1670,7 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 == value2 / value3 - value4) ? value1 : -999; break;
                                                             case "x": result = (value1 == value2 / value3 * value4) ? value1 : -999; break;
                                                             case "¡Â": result = (value1 == value2 / value3 / value4) ? value1 : -999; break;
-                                                            case "%": result = (value1 == value2 / value3 % value4 && value2 / value3 >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == value2 / Mathf.Pow(value3, value4) && value3 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == value2 / Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 : -999; break;
                                                             case "=": result = (value1 == value2 / value3 && value2 / value3 == value4) ? value1 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "%":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 == value2 % value3 + value4 && value2 >= value3) ? value1 : -999; break;
-                                                            case "-": result = (value1 == value2 % value3 - value4 && value2 >= value3) ? value1 : -999; break;
-                                                            case "x": result = (value1 == value2 % value3 * value4 && value2 >= value3) ? value1 : -999; break;
-                                                            case "¡Â": result = (value1 == value2 % value3 / value4 && value2 >= value3) ? value1 : -999; break;
-                                                            case "%": result = (value1 == value2 % value3 % value4 && value2 >= value3 && value2 % value3 >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == value2 % Mathf.Pow(value3, value4) && value2 >= Mathf.Pow(value3, value4) && value3 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == value2 % Mathf.Pow(value3, 1.0f / value4) && value2 >= Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 : -999; break;
-                                                            case "=": result = (value1 == value2 % value3 && value2 % value3 == value4 && value2 >= value3) ? value1 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "^":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 == Mathf.Pow(value2, value3) + value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "-": result = (value1 == Mathf.Pow(value2, value3) - value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "x": result = (value1 == Mathf.Pow(value2, value3) * value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "¡Â": result = (value1 == Mathf.Pow(value2, value3) / value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "%": result = (value1 == Mathf.Pow(value2, value3) % value4 && value2 != 1 && Mathf.Pow(value2, value3) >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == Mathf.Pow(Mathf.Pow(value2, value3), value4) && value2 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == Mathf.Pow(Mathf.Pow(value2, value3), 1.0f / value4) && value2 != 1) ? value1 : -999; break;
-                                                            case "=": result = (value1 == Mathf.Pow(value2, value3) && Mathf.Pow(value2, value3) == value4 && value2 != 1) ? value1 : -999; break;
-                                                        }
-                                                        break;
-                                                    case "¡Ì":
-                                                        switch (op3)
-                                                        {
-                                                            case "+": result = (value1 == Mathf.Pow(value2, 1.0f / value3) + value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "-": result = (value1 == Mathf.Pow(value2, 1.0f / value3) - value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "x": result = (value1 == Mathf.Pow(value2, 1.0f / value3) * value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "¡Â": result = (value1 == Mathf.Pow(value2, 1.0f / value3) / value4 && value2 != 1) ? value1 : -999; break;
-                                                            case "%": result = (value1 == Mathf.Pow(value2, 1.0f / value3) % value4 && value2 != 1 && Mathf.Pow(value2, 1.0f / value3) >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), value4) && value2 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == Mathf.Pow(Mathf.Pow(value2, 1.0f / value3), 1.0f / value4) && value2 != 1) ? value1 : -999; break;
-                                                            case "=": result = (value1 == Mathf.Pow(value2, 1.0f / value3) && Mathf.Pow(value2, 1.0f / value3) == value4 && value2 != 1) ? value1 : -999; break;
                                                         }
                                                         break;
                                                     case "=":
@@ -2274,9 +1680,6 @@ public class GameplayH : MonoBehaviour
                                                             case "-": result = (value1 == value2 && value2 == value3 - value4) ? value1 : -999; break;
                                                             case "x": result = (value1 == value2 && value2 == value3 * value4) ? value1 : -999; break;
                                                             case "¡Â": result = (value1 == value2 && value2 == value3 / value4) ? value1 : -999; break;
-                                                            case "%": result = (value1 == value2 && value2 == value3 % value4 && value3 >= value4) ? value1 : -999; break;
-                                                            case "^": result = (value1 == value2 && value2 == Mathf.Pow(value3, value4) && value3 != 1) ? value1 : -999; break;
-                                                            case "¡Ì": result = (value1 == value2 && value2 == Mathf.Pow(value3, 1.0f / value4) && value3 != 1) ? value1 : -999; break;
                                                             case "=": result = (value1 == value2 && value2 == value3 && value3 == value4) ? value1 : -999; break;
                                                         }
                                                         break;
