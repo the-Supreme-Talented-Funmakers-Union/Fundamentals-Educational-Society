@@ -3,7 +3,12 @@ guid: 78e70a1532484c34b94df549ea5befc2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - EasyMode: {instanceID: 0}
+  - MediumMode: {instanceID: 0}
+  - HardMode: {instanceID: 0}
+  - LevelList: {instanceID: 0}
+  - buttonClickSound: {fileID: 8300000, guid: 3da2d06f91a0ebb4686f82a8119f5e5d, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

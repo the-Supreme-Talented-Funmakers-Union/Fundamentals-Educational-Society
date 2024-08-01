@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public enum CardType
 {
     Spades,
@@ -6,6 +7,7 @@ public enum CardType
     Clubs,
     Diamonds,
 }
+
 public class Card : MonoBehaviour
 {
     private CardType cardType;
@@ -16,6 +18,24 @@ public class Card : MonoBehaviour
     private static Card highlightedCard = null;
     private Vector3 offset;
     private Transform originalParent;
+
+    private AudioSource audioSource;
+    public AudioClip clickSound;
+    public AudioClip dropSound;
+
+    void Start()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        clickSound = Resources.Load<AudioClip>("Audio/clickSound");
+        dropSound = Resources.Load<AudioClip>("Audio/dropSound");
+        audioSource.playOnAwake = false; 
+
+        if (clickSound == null || dropSound == null)
+        {
+            Debug.LogError("Failed to load one or more sound files. Please ensure they are located at Assets/Resources/Audio/");
+        }
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -34,6 +54,8 @@ public class Card : MonoBehaviour
                         transform.SetParent(null);
                         GetComponent<SpriteRenderer>().sortingOrder = 100;
                         isDragging = true;
+
+                        audioSource.PlayOneShot(clickSound);
                     }
                     else
                     {
@@ -69,6 +91,8 @@ public class Card : MonoBehaviour
                     targetPos = GameObject.Find("P1Hand").transform.position;
                 }
                 isDragging = false;
+
+                audioSource.PlayOneShot(dropSound);
             }
         }
         if (!isDragging)
@@ -80,26 +104,31 @@ public class Card : MonoBehaviour
             }
         }
     }
+
     public int GetCardValue
     {
         set { cardValue = value; }
         get { return cardValue; }
     }
+
     public CardType GetCardType
     {
         set { cardType = value; }
         get { return cardType; }
     }
+
     public Vector3 GetTargetPos
     {
         set { targetPos = value; }
         get { return targetPos; }
     }
+
     public bool IsHighlighted
     {
         set { Highlighted = value; }
         get { return Highlighted; }
     }
+
     public static void RevealCard(GameObject cardObject)
     {
         if (cardObject.GetComponent<Card>().GetCardValue <= 13)
@@ -115,6 +144,7 @@ public class Card : MonoBehaviour
             cardObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Math/Pokers/JokerRed");
         }
     }
+
     public void HighlightCard()
     {
         if (highlightedCard != null)
@@ -125,26 +155,31 @@ public class Card : MonoBehaviour
         Highlighted = true;
         GetComponent<SpriteRenderer>().color = Color.yellow;
     }
+
     public void DehighlightCard()
     {
         Highlighted = false;
         GetComponent<SpriteRenderer>().color = Color.white;
         highlightedCard = null;
     }
+
     private Vector3 GetMouseWorldPos()
     {
         Vector3 mousePoint = Input.mousePosition;
         mousePoint.z = Camera.main.nearClipPlane;
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
+
     private bool IsInPlayerHand()
     {
         return transform.parent.name == "P1Hand";
     }
+
     private bool IsInSlot()
     {
         return transform.parent.CompareTag("CardSlot");
     }
+
     private Transform GetSlotUnderMouse()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
