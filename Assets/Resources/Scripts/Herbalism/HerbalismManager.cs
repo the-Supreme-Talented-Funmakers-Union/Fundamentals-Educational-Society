@@ -24,6 +24,15 @@ public class HerbalismManager : MonoBehaviour
     {
         audioSource.PlayOneShot(buttonClickSound);
         gameplay.SinglePlayer = true;
+        gameplay.EasyMode = false;
+        TypeList.SetActive(false);
+        Begin.SetActive(true);
+    }
+    public void EasyPlayer()
+    {
+        audioSource.PlayOneShot(buttonClickSound);
+        gameplay.SinglePlayer = true;
+        gameplay.EasyMode = true;
         TypeList.SetActive(false);
         Begin.SetActive(true);
     }
@@ -31,6 +40,7 @@ public class HerbalismManager : MonoBehaviour
     {
         audioSource.PlayOneShot(buttonClickSound);
         gameplay.SinglePlayer = false;
+        gameplay.EasyMode = false;
         TypeList.SetActive(false);
         Begin.SetActive(true);
     }

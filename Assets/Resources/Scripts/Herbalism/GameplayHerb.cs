@@ -19,6 +19,7 @@ public class GameplayHerb : MonoBehaviour
     public TMP_Text player4Score;
     public GameObject quit;
     public bool SinglePlayer;
+    public bool EasyMode;
     public int currentPlayer;
     private bool firstGuess, secondGuess;
     private CardHerb firstCard, secondCard;
@@ -34,6 +35,20 @@ public class GameplayHerb : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
+    }
+    void Update()
+    {
+        if (EasyMode)
+        {
+            foreach (var card in revealedImageCards)
+            {
+                card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Herbalism/Plants" + "/" + card.GetPlantName);
+            }
+            foreach (var card in revealedTextCards)
+            {
+                card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Herbalism/Text" + "/" + card.GetPlantName);
+            }
+        }
     }
     public void ClassBegin(GameObject button)
     {
