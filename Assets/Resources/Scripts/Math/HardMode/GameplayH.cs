@@ -106,6 +106,14 @@ public class GameplayH : MonoBehaviour
             goalValue.text = "";
         }
     }
+    public void GameStart()
+    {
+        currentPlayer = Random.Range(1, 5);
+        if (currentPlayer != 1)
+        {
+            StartCoroutine(AITurn(currentPlayer));
+        }
+    }
     private void CheckTurn()
     {
         if (currentPlayer == 1)
@@ -1686,7 +1694,7 @@ public class GameplayH : MonoBehaviour
                                                 }
                                                 break;
                                         }
-                                        if (Mathf.Round(result) == goal)
+                                        if (Mathf.Approximately(result, goal))
                                         {
                                             foundValidMove = true;
                                             yield return new WaitForSeconds(1.5f);

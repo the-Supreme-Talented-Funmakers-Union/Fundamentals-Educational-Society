@@ -14,8 +14,12 @@ public class TileScene : MonoBehaviour
     public float fadeOutDuration = 2.0f;
     private Color originalColor;
     private bool fadedIn = false;
+    private AudioSource audioSource;
+    public AudioClip buttonClickSound;
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
         Color color = fadeImage.color;
         color.a = 1.0f;
         fadeImage.color = color;
@@ -28,6 +32,7 @@ public class TileScene : MonoBehaviour
         textMeshPro.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
         if (fadedIn && Input.GetKeyDown(KeyCode.Return))
         {
+            audioSource.PlayOneShot(buttonClickSound);
             StartCoroutine(FadeOutScene());
         }
     }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class DealerH : MonoBehaviour
 {
     public GameplayH gameplay;
@@ -20,25 +19,15 @@ public class DealerH : MonoBehaviour
     private Card card;
     private List<Card> cardLibrary = new List<Card>();
     private Queue<Card> cardQueue = new Queue<Card>();
-
     private AudioSource audioSource;
     public AudioClip dealSound;
-
     void Start()
     {
         CreatCard();
         shuffle();
-
-        audioSource = gameObject.AddComponent<AudioSource>();
-        dealSound = Resources.Load<AudioClip>("Audio/dealSound");
+        audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false; 
-
-        if (dealSound == null)
-        {
-            Debug.LogError("Failed to load deal sound. Please ensure the file is located at Assets/Resources/Audio/dealSound");
-        }
     }
-
     public void CreatCard()
     {
         for (int d = 0; d < 2; d++)
@@ -83,7 +72,6 @@ public class DealerH : MonoBehaviour
             cardLibrary.Add(card);
         }
     }
-
     public void shuffle()
     {
         List<Card> tempLibrary = new List<Card>();
@@ -99,7 +87,6 @@ public class DealerH : MonoBehaviour
         }
         tempLibrary.Clear();
     }
-
     public IEnumerator Deal()
     {
         Card cards;
@@ -132,10 +119,7 @@ public class DealerH : MonoBehaviour
                         break;
                 }
                 cards.gameObject.SetActive(true);
-
-                // 播放发牌音效
                 audioSource.PlayOneShot(dealSound);
-
                 yield return new WaitForSeconds(0.2f);
             }
             else
@@ -155,8 +139,8 @@ public class DealerH : MonoBehaviour
         yield return new WaitForSeconds(1f);
         UI.SetActive(true);
         cardDealt = true;
+        gameplay.GameStart();
     }
-
     void Update()
     {
         GoalCorrection();
@@ -165,7 +149,6 @@ public class DealerH : MonoBehaviour
             StartCoroutine(Reshuffle());
         }
     }
-
     public void GoalCorrection()
     {
         if (cardGoal.childCount > 0)
@@ -180,7 +163,6 @@ public class DealerH : MonoBehaviour
             }
         }
     }
-
     public IEnumerator Reshuffle()
     {
         if (!cardDealt)
@@ -205,7 +187,6 @@ public class DealerH : MonoBehaviour
             card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Math/Pokers/CardBack");
         }
     }
-
     public void Draw()
     {
         if (cardHolder.childCount > 0)

@@ -10,49 +10,37 @@ public class ButtonM : MonoBehaviour
     public GameObject skip;
     public int drawCount = 0;
     public string[] operators = { "+", "-", "x", "÷", "^", "%", "=" };
-
     private AudioSource audioSource;
     public AudioClip buttonClickSound;
-
     void Start()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        buttonClickSound = Resources.Load<AudioClip>("Audio/buttonClick");
+        audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false; 
-
-        if (buttonClickSound == null)
-        {
-            Debug.LogError("Failed to load button click sound. Please ensure the file is located at Assets/Resources/Audio/buttonClick");
-        }
     }
-
     public void ClassBegin(GameObject button)
     {
-        PlayButtonClickSound();
+        audioSource.PlayOneShot(buttonClickSound);
         StartCoroutine(dealer.Deal());
         button.SetActive(false);
     }
-
     public void CycleOperator(TMP_Text operatorText)
     {
         if (gameplay.currentPlayer == 1)
         {
-            PlayButtonClickSound();
+            audioSource.PlayOneShot(buttonClickSound);
             int currentOperatorIndex = System.Array.IndexOf(operators, operatorText.text);
             currentOperatorIndex = (currentOperatorIndex + 1) % operators.Length;
             operatorText.text = operators[currentOperatorIndex];
         }
     }
-
     public void Confirm()
     {
-        PlayButtonClickSound();
+        audioSource.PlayOneShot(buttonClickSound);
         StartCoroutine(gameplay.ConfirmSelection());
     }
-
     public void DrawCard()
     {
-        PlayButtonClickSound();
+        audioSource.PlayOneShot(buttonClickSound);
         if (!gameplay.newGoal)
         {
             dealer.Draw();
@@ -60,10 +48,9 @@ public class ButtonM : MonoBehaviour
             CheckDraw();
         }
     }
-
     public void SkipTurn()
     {
-        PlayButtonClickSound();
+        audioSource.PlayOneShot(buttonClickSound);
         switch (gameplay.currentPlayer)
         {
             case 1:
@@ -153,10 +140,9 @@ public class ButtonM : MonoBehaviour
             StartCoroutine(gameplay.AITurn(gameplay.currentPlayer));
         }
     }
-
     public void SetGoal(int cardslot)
     {
-        PlayButtonClickSound();
+        audioSource.PlayOneShot(buttonClickSound);
         if (gameplay.newGoal)
         {
             dealer.cardGoal.GetChild(0).GetComponent<Card>().GetTargetPos = dealer.cardRecycler.position;
@@ -200,7 +186,6 @@ public class ButtonM : MonoBehaviour
             StartCoroutine(gameplay.AITurn(gameplay.currentPlayer));
         }
     }
-
     public void CheckDraw()
     {
         if (drawCount == 5)
@@ -214,22 +199,9 @@ public class ButtonM : MonoBehaviour
             draw.SetActive(true);
         }
     }
-
     public void ExitGame()
     {
-        PlayButtonClickSound();
+        audioSource.PlayOneShot(buttonClickSound);
         SceneManager.LoadScene(1);
-    }
-
-    private void PlayButtonClickSound()
-    {
-        if (buttonClickSound != null)
-        {
-            audioSource.PlayOneShot(buttonClickSound);
-        }
-        else
-        {
-            Debug.LogWarning("Button click sound is null.");
-        }
     }
 }

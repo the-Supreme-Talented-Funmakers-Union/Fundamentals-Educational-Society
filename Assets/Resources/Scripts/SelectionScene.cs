@@ -1,17 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
 public class SelectionScene : MonoBehaviour
 {
     public Image fadeImage;
     public float fadeInDuration = 2.0f;
     public float fadeOutDuration = 2.0f;
+    private AudioSource audioSource;
+    public AudioClip buttonClickSound;
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
         Color color = fadeImage.color;
         color.a = 1.0f;
         StartCoroutine(FadeInScene());
@@ -56,14 +57,20 @@ public class SelectionScene : MonoBehaviour
     }
     public void ToMath()
     {
+        audioSource.PlayOneShot(buttonClickSound);
         StartCoroutine(FadeOutScene(2));
+        SceneManager.LoadScene(2);
     }
     public void ToHerbalism()
     {
+        audioSource.PlayOneShot(buttonClickSound);
         StartCoroutine(FadeOutScene(3));
+        SceneManager.LoadScene(3);
     }
     public void ExitGame()
     {
+        audioSource.PlayOneShot(buttonClickSound);
         StartCoroutine(FadeOutScene(-1));
+        Application.Quit();
     }
 }

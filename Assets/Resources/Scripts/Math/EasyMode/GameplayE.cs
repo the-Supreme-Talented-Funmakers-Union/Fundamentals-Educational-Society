@@ -80,6 +80,14 @@ public class GameplayE : MonoBehaviour
             goalValue.text = "";
         }
     }
+    public void GameStart()
+    {
+        currentPlayer = Random.Range(1, 5);
+        if (currentPlayer != 1)
+        {
+            StartCoroutine(AITurn(currentPlayer));
+        }
+    }
     private void CheckTurn()
     {
         if (currentPlayer == 1)

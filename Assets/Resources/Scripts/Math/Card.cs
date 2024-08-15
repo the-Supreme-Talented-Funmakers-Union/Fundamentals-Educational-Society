@@ -18,22 +18,13 @@ public class Card : MonoBehaviour
     private static Card highlightedCard = null;
     private Vector3 offset;
     private Transform originalParent;
-
     private AudioSource audioSource;
     public AudioClip clickSound;
     public AudioClip dropSound;
-
     void Start()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        clickSound = Resources.Load<AudioClip>("Audio/clickSound");
-        dropSound = Resources.Load<AudioClip>("Audio/dropSound");
+        audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false; 
-
-        if (clickSound == null || dropSound == null)
-        {
-            Debug.LogError("Failed to load one or more sound files. Please ensure they are located at Assets/Resources/Audio/");
-        }
     }
 
     void Update()
@@ -54,7 +45,6 @@ public class Card : MonoBehaviour
                         transform.SetParent(null);
                         GetComponent<SpriteRenderer>().sortingOrder = 100;
                         isDragging = true;
-
                         audioSource.PlayOneShot(clickSound);
                     }
                     else
@@ -91,7 +81,6 @@ public class Card : MonoBehaviour
                     targetPos = GameObject.Find("P1Hand").transform.position;
                 }
                 isDragging = false;
-
                 audioSource.PlayOneShot(dropSound);
             }
         }
